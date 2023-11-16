@@ -36,5 +36,10 @@ public class CraftingMaterialEntryView : MonoBehaviour {
         GameController.instance.UpdateMaterialAmount(newAmount, transform.GetSiblingIndex());
     }
 
+    public void OnMaterialDelete()
+    {
+        GameController.instance.RemoveMaterial(materialName.text);
+    }
+
     #endregion
 }

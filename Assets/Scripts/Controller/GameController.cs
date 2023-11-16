@@ -173,6 +173,12 @@ public class GameController : MonoBehaviour
         GameModel.UpdateMaterialAmount(uint.Parse(materialAmount), materialIndex);
     }
 
+    public void RemoveMaterial(string materialName)
+    {
+        GameModel.RemoveMaterial(materialName);
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
+    }
+
     #endregion
 
     #region Statistics

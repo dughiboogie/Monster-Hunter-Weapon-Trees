@@ -184,6 +184,16 @@ public static class GameModel
         selectedWeapon.craftingCosts.materials[materialIndex].materialAmount = materialAmount;
     }
 
+    public static void RemoveMaterial(string materialName)
+    {
+        foreach(var item in selectedWeapon.craftingCosts.materials) {
+            if(item.materialName == materialName) {
+                selectedWeapon.craftingCosts.materials.Remove(item);
+                return;
+            }
+        }
+    }
+
     #endregion
 
     #region Statistics
