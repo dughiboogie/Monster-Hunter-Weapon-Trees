@@ -11,6 +11,7 @@ public class WeaponTree
     public WeaponTree(int weaponTreePosition)
     {
         weaponTreeID = new UniqueID();
+        weaponTreeID.InitialiseUniqueID();
         weapons = new List<Weapon>();
 
         this.weaponTreePosition = weaponTreePosition;

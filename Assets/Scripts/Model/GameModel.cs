@@ -194,20 +194,20 @@ public static class GameModel
         return craftingMaterial;
     }
 
-    public static void UpdateMaterialName(string materialName, int materialIndex)
+    public static void UpdateMaterialName(string materialName, UniqueID materialID)
     {
-        selectedWeapon.craftingCosts.materials[materialIndex].materialName = materialName;
+        selectedWeapon.craftingCosts.materials.Find(x => x.materialID.value == materialID.value).materialName = materialName;
     }
 
-    public static void UpdateMaterialAmount(uint materialAmount, int materialIndex)
+    public static void UpdateMaterialAmount(uint materialAmount, UniqueID materialID)
     {
-        selectedWeapon.craftingCosts.materials[materialIndex].materialAmount = materialAmount;
+        selectedWeapon.craftingCosts.materials.Find(x => x.materialID.value == materialID.value).materialAmount = materialAmount;
     }
 
-    public static void RemoveMaterial(string materialName)
+    public static void RemoveMaterial(UniqueID materialID)
     {
         foreach(CraftingMaterial material in selectedWeapon.craftingCosts.materials) {
-            if(material.materialName == materialName) {
+            if(material.materialID.value == materialID.value) {
                 selectedWeapon.craftingCosts.materials.Remove(material);
                 return;
             }

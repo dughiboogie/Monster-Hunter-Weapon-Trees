@@ -178,19 +178,19 @@ public class GameController : MonoBehaviour
         detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
-    public void UpdateMaterialName(string materialName, int materialIndex)
+    public void UpdateMaterialName(string materialName, UniqueID materialID)
     {
-        GameModel.UpdateMaterialName(materialName, materialIndex);
+        GameModel.UpdateMaterialName(materialName, materialID);
     }
 
-    public void UpdateMaterialAmount(string materialAmount, int materialIndex)
+    public void UpdateMaterialAmount(string materialAmount, UniqueID materialID)
     {
-        GameModel.UpdateMaterialAmount(uint.Parse(materialAmount), materialIndex);
+        GameModel.UpdateMaterialAmount(uint.Parse(materialAmount), materialID);
     }
 
-    public void RemoveMaterial(string materialName)
+    public void RemoveMaterial(UniqueID materialID)
     {
-        GameModel.RemoveMaterial(materialName);
+        GameModel.RemoveMaterial(materialID);
         detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 

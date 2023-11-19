@@ -13,10 +13,13 @@ public class CraftingMaterialEntryView : MonoBehaviour {
     [SerializeField]
     private TMP_InputField materialAmount;
 
+    private UniqueID materialID;
+
     public void Initialise(CraftingMaterial material)
     {
         materialName.text = material.materialName;
         FormatMaterialAmount(material.materialAmount.ToString());
+        materialID = material.materialID;
     }
 
     private void FormatMaterialAmount(string materialAmount)
@@ -28,17 +31,17 @@ public class CraftingMaterialEntryView : MonoBehaviour {
 
     public void OnMaterialNameChange(string newName)
     {
-        GameController.instance.UpdateMaterialName(newName, transform.GetSiblingIndex());
+        GameController.instance.UpdateMaterialName(newName, materialID);
     }
 
     public void OnMaterialAmountChange(string newAmount)
     {
-        GameController.instance.UpdateMaterialAmount(newAmount, transform.GetSiblingIndex());
+        GameController.instance.UpdateMaterialAmount(newAmount, materialID);
     }
 
     public void OnMaterialDelete()
     {
-        GameController.instance.RemoveMaterial(materialName.text);
+        GameController.instance.RemoveMaterial(materialID);
     }
 
     #endregion
