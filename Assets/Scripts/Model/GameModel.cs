@@ -46,7 +46,7 @@ public static class GameModel
 
     public static WeaponTree AddWeaponTree()
     {
-        WeaponTree weaponTree = new WeaponTree();
+        WeaponTree weaponTree = new WeaponTree(currentGame.weaponTrees.Count);
         currentGame.weaponTrees.Add(weaponTree);
         return weaponTree;
     }
@@ -103,6 +103,14 @@ public static class GameModel
         selectedWeapon.craftingCosts.coinCost = weaponCost;
     }
 
+    public static void DeleteSelectedWeapon()
+    {
+        RemoveWeaponNextEvolutions();
+
+        currentGame.weaponTrees[selectedWeapon.weaponCoordinates.y].weapons.Remove(selectedWeapon);
+        selectedWeapon = null;
+    }
+
     #endregion
 
     #region WeaponEvolution
@@ -135,7 +143,7 @@ public static class GameModel
 
         if(weapon != null) {
             dragEndWeapon = weapon;
-            UpdateWeaponEvolution();
+            UpdateWeaponPreviousEvolution();
         }
         else {
             Debug.LogWarning($"Drag end weapon at coordinates {weaponCoordinates} with ID {weaponID} was not found in Model.");
@@ -144,21 +152,33 @@ public static class GameModel
         ResetDragWeapons();
     }
 
-    private static void UpdateWeaponEvolution()
+    private static void UpdateWeaponPreviousEvolution()
     {
         // Means that starting weapon is the previous evolution
         if(dragStartWeapon.weaponCoordinates.x < dragEndWeapon.weaponCoordinates.x) {
-            dragEndWeapon.previousWeaponEvolutionID = dragStartWeapon.weaponID;
+            dragEndWeapon.previousWeaponEvolutionID.value = dragStartWeapon.weaponID.value;
             GameController.instance.OnWeaponEvolutionUpdated(dragStartWeapon.weaponCoordinates, dragEndWeapon.weaponCoordinates);
         }
         // Means that ending weapon is the previous evolution
         else {
-            dragStartWeapon.previousWeaponEvolutionID = dragEndWeapon.weaponID;
+            dragStartWeapon.previousWeaponEvolutionID.value = dragEndWeapon.weaponID.value;
             GameController.instance.OnWeaponEvolutionUpdated(dragEndWeapon.weaponCoordinates, dragStartWeapon.weaponCoordinates);
         }
     }
 
-    public static void DeleteWeaponEvolution()
+    private static void RemoveWeaponNextEvolutions()
+    {
+        foreach(WeaponTree weaponTree in currentGame.weaponTrees) {
+            foreach(Weapon weapon in weaponTree.weapons) {
+                if(weapon.previousWeaponEvolutionID.value != string.Empty &&
+                    weapon.previousWeaponEvolutionID.value == selectedWeapon.weaponID.value) {
+                    weapon.previousWeaponEvolutionID.value = string.Empty;
+                }
+            }
+        }
+    }
+
+    public static void DeleteWeaponPreviousEvolution()
     {
         selectedWeapon.previousWeaponEvolutionID.value = string.Empty;
     }
@@ -186,9 +206,9 @@ public static class GameModel
 
     public static void RemoveMaterial(string materialName)
     {
-        foreach(var item in selectedWeapon.craftingCosts.materials) {
-            if(item.materialName == materialName) {
-                selectedWeapon.craftingCosts.materials.Remove(item);
+        foreach(CraftingMaterial material in selectedWeapon.craftingCosts.materials) {
+            if(material.materialName == materialName) {
+                selectedWeapon.craftingCosts.materials.Remove(material);
                 return;
             }
         }

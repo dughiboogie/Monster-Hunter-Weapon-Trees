@@ -40,10 +40,7 @@ public class GameController : MonoBehaviour
         GameModel.LoadGame(gameName);
         windowName.text = gameName;
 
-        gameWeaponTreesView.RemoveAllWeaponTrees();
-        foreach(WeaponTree weaponTree in GameModel.GetCurrentGame().weaponTrees) {
-            gameWeaponTreesView.AddWeaponTreeView(weaponTree);
-        }
+        InstantiateWeaponTreeViews();
     }
 
     // TODO Create new class HeaderView and move this method there?
@@ -82,6 +79,14 @@ public class GameController : MonoBehaviour
     public void UpdateWeaponTreeName(UniqueID weaponTreeID, string weaponTreeName)
     {
         GameModel.UpdateWeaponTreeName(weaponTreeID, weaponTreeName);
+    }
+
+    private void InstantiateWeaponTreeViews()
+    {
+        gameWeaponTreesView.RemoveWeaponTreeViews();
+        foreach(WeaponTree weaponTree in GameModel.GetCurrentGame().weaponTrees) {
+            gameWeaponTreesView.AddWeaponTreeView(weaponTree);
+        }
     }
 
     #endregion
@@ -126,6 +131,16 @@ public class GameController : MonoBehaviour
         GameModel.UpdateWeaponCost(uint.Parse(weaponCostText));
     }
 
+    public void DeleteSelectedWeapon()
+    {
+        if(GameModel.GetSelectedWeapon() != null) {
+            GameModel.DeleteSelectedWeapon();
+
+            InstantiateWeaponTreeViews();
+            detailsView.gameObject.SetActive(false);
+        }
+    }
+
     #endregion
 
     #region WeaponEvolution
@@ -148,7 +163,7 @@ public class GameController : MonoBehaviour
     public void DeleteWeaponEvolution()
     {
         if(GameModel.GetSelectedWeapon() != null) {
-            GameModel.DeleteWeaponEvolution();
+            GameModel.DeleteWeaponPreviousEvolution();
             gameWeaponTreesView.CancelEvolutionLine(GameModel.GetSelectedWeapon());
         }
     }

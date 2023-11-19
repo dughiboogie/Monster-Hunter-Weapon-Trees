@@ -28,12 +28,10 @@ public class WeaponTreeView : MonoBehaviour
     {
         weaponTreeName.text = weaponTree.weaponTreeName;
         weaponTreeID = weaponTree.weaponTreeID;
-        weaponTreePosition = transform.GetSiblingIndex();
+        weaponTreePosition = weaponTree.weaponTreePosition;
 
-        GameController.instance.UpdateWeaponTreePosition(weaponTreeID, weaponTreePosition);
         SetWeaponTreeRowBackgroundColor();
         SetupWeaponTreeEntryViewsGrid();
-
         UpdateWeaponEntryViews(weaponTree.weapons);
     }
 
@@ -90,6 +88,11 @@ public class WeaponTreeView : MonoBehaviour
     public void DeselectWeapon(Weapon weapon)
     {
         weaponTreeEntryViews[weapon.weaponCoordinates.x].IsSelected = false;
+    }
+
+    public void DeleteWeapon(Weapon weapon)
+    {
+        weaponTreeEntryViews[weapon.weaponCoordinates.x].DeleteWeapon();
     }
 
     public void CancelEvolutionLine(Weapon weapon)

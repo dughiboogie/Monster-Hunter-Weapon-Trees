@@ -51,6 +51,17 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
         // Do other VIEW POPULATION (e.g. element, rarity, etc)
     }
 
+    public void DeleteWeapon()
+    {
+        weaponID.value = string.Empty;
+        isWeaponPresent = false;
+        isSelected = false;
+
+        weaponIcon.gameObject.SetActive(false);
+        CancelEvolutionLine();
+        ActivateCellBackground(false);
+    }
+
     #region EvolutionLines
 
     public void DrawEvolutionLine(Vector2Int previousWeaponCoordinates)

@@ -8,9 +8,11 @@ public class WeaponTree
     public int weaponTreePosition;
     public List<Weapon> weapons;
 
-    public WeaponTree()
+    public WeaponTree(int weaponTreePosition)
     {
         weaponTreeID = new UniqueID();
         weapons = new List<Weapon>();
+
+        this.weaponTreePosition = weaponTreePosition;
     }
 }
