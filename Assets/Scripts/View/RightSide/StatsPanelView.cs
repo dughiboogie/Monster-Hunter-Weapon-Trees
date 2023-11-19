@@ -53,10 +53,14 @@ public class StatsPanelView : MonoBehaviour
 
     public void ResetView()
     {
-        // rarityColour.Reset()
         hasWeaponButton.isOn = false;
         rarityValue.SetValueWithoutNotify(0);
+        weaponIcon.UpdateRarityColour(0);
         attackValue.SetTextWithoutNotify(string.Empty);
+
+        defenseBonus.SetTextWithoutNotify(string.Empty);
+        shellingType.SetValueWithoutNotify(0);
+        shellingLevel.SetValueWithoutNotify(0);
     }
 
     public void UpdateView(Weapon weapon)
@@ -65,6 +69,11 @@ public class StatsPanelView : MonoBehaviour
         rarityValue.SetValueWithoutNotify((int)weapon.weaponStats.rarity);
         weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
         attackValue.SetTextWithoutNotify(weapon.weaponStats.attackValue.ToString());
+
+        defenseBonus.SetTextWithoutNotify(weapon.weaponStats.defenseValue.ToString());
+
+        shellingType.SetValueWithoutNotify((int)weapon.weaponStats.shellingType);
+        shellingLevel.SetValueWithoutNotify((int)weapon.weaponStats.shellingLevel);
     }
 
     #region Events
@@ -92,6 +101,11 @@ public class StatsPanelView : MonoBehaviour
     public void OnAffinityValueChanged(string affinityValue)
     {
         GameController.instance.UpdateAffinityValue(affinityValue);
+    }
+
+    public void OnElementChanged(TMP_Dropdown change)
+    {
+        // GameController.instance.UpdateElement(change.captionText.text);
     }
 
     public void OnDefenseValueChanged(string defenseValue)

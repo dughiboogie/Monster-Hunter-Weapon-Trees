@@ -285,6 +285,54 @@ public static class GameModel
         selectedWeapon.weaponStats.defenseValue = defenseValue;
     }
 
+    public static void UpdateShellingType(string shellingType)
+    {
+        switch(shellingType) {
+            case "Normal":
+                selectedWeapon.weaponStats.shellingType = ShellingType.Normal;
+                break;
+            case "Wide":
+                selectedWeapon.weaponStats.shellingType = ShellingType.Wide;
+                break;
+            case "Long":
+                selectedWeapon.weaponStats.shellingType = ShellingType.Long;
+                break;
+            default:
+                Debug.LogError($"Trying to update shelling type to an invalid value: {shellingType}");
+                break;
+        }
+    }
+
+    public static void UpdateShellingLevel(string shellingLevel)
+    {
+        switch(shellingLevel) {
+            case "Lv1":
+                selectedWeapon.weaponStats.shellingLevel = ShellingLevel.Lv1;
+                break;
+            case "Lv2":
+                selectedWeapon.weaponStats.shellingLevel = ShellingLevel.Lv2;
+                break;
+            case "Lv3":
+                selectedWeapon.weaponStats.shellingLevel = ShellingLevel.Lv3;
+                break;
+            case "Lv4":
+                selectedWeapon.weaponStats.shellingLevel = ShellingLevel.Lv4;
+                break;
+            case "Lv5":
+                selectedWeapon.weaponStats.shellingLevel = ShellingLevel.Lv5;
+                break;
+            case "Lv6":
+                selectedWeapon.weaponStats.shellingLevel = ShellingLevel.Lv6;
+                break;
+            case "Lv7":
+                selectedWeapon.weaponStats.shellingLevel = ShellingLevel.Lv7;
+                break;
+            default:
+                Debug.LogError($"Trying to update shelling level to an invalid value: {shellingLevel}");
+                break;
+        }
+    }
+
     #endregion
 
     #region Getters

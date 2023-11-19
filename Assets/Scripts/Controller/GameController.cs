@@ -231,12 +231,13 @@ public class GameController : MonoBehaviour
 
     public void UpdateShellingType(string shellingType)
     {
-
+        GameModel.UpdateShellingType(shellingType);
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateShellingLevel(string shellingLevel)
     {
-
+        GameModel.UpdateShellingLevel(shellingLevel);
     }
 
     public void UpdateElderseal(string eldersealValue)
