@@ -90,6 +90,11 @@ public class WeaponTreeView : MonoBehaviour
         weaponTreeEntryViews[weapon.weaponCoordinates.x].IsSelected = false;
     }
 
+    public void UpdateWeaponRarity(Weapon weapon)
+    {
+        weaponTreeEntryViews[weapon.weaponCoordinates.x].UpdateWeaponRarity(weapon);
+    }
+
     public void DeleteWeapon(Weapon weapon)
     {
         weaponTreeEntryViews[weapon.weaponCoordinates.x].DeleteWeapon();

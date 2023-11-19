@@ -39,6 +39,11 @@ public class GameWeaponTreesView : MonoBehaviour
         weaponTreeViews[weapon.weaponCoordinates.y].DeselectWeapon(weapon);
     }
 
+    public void UpdateSelectedWeaponRarity(Weapon weapon)
+    {
+        weaponTreeViews[weapon.weaponCoordinates.y].UpdateWeaponRarity(weapon);
+    }
+
     public void DeleteWeapon(Weapon weapon)
     {
         weaponTreeViews[weapon.weaponCoordinates.y].DeleteWeapon(weapon);

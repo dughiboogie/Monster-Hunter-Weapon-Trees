@@ -47,7 +47,9 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
         if(weapon.previousWeaponEvolutionID.value != string.Empty) {
             DrawEvolutionLine(GameModel.GetWeaponByID(weapon.previousWeaponEvolutionID).weaponCoordinates);
         }
-        
+
+        UpdateWeaponRarity(weapon);
+
         // Do other VIEW POPULATION (e.g. element, rarity, etc)
     }
 
@@ -60,6 +62,11 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
         weaponIcon.gameObject.SetActive(false);
         CancelEvolutionLine();
         ActivateCellBackground(false);
+    }
+
+    public void UpdateWeaponRarity(Weapon weapon)
+    {
+        weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
     }
 
     #region EvolutionLines

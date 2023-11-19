@@ -201,8 +201,8 @@ public class GameController : MonoBehaviour
     public void UpdateRarity(string rarity)
     {
         GameModel.UpdateRarity(rarity);
-        
-        // TODO Update view - Change rarity icon BG colour
+        gameWeaponTreesView.UpdateSelectedWeaponRarity(GameModel.GetSelectedWeapon());
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateAttackValue(string attackValue)

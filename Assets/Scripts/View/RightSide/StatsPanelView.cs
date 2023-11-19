@@ -5,7 +5,7 @@ using TMPro;
 public class StatsPanelView : MonoBehaviour
 {
     [SerializeField]
-    private Image rarityColour;
+    private WeaponIconView weaponIcon;
 
     [SerializeField]
     private Toggle hasWeaponButton;
@@ -57,16 +57,14 @@ public class StatsPanelView : MonoBehaviour
         hasWeaponButton.isOn = false;
         rarityValue.SetValueWithoutNotify(0);
         attackValue.SetTextWithoutNotify(string.Empty);
-
-
     }
 
     public void UpdateView(Weapon weapon)
     {
         hasWeaponButton.isOn = weapon.hasWeapon;
         rarityValue.SetValueWithoutNotify((int)weapon.weaponStats.rarity);
+        weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
         attackValue.SetTextWithoutNotify(weapon.weaponStats.attackValue.ToString());
-
     }
 
     #region Events
