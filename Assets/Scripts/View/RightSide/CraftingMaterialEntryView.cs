@@ -13,6 +13,9 @@ public class CraftingMaterialEntryView : MonoBehaviour {
     [SerializeField]
     private TMP_InputField materialAmount;
 
+    [SerializeField]
+    private Image rowBackground;
+
     private UniqueID materialID;
 
     public void Initialise(CraftingMaterial material)
@@ -20,11 +23,22 @@ public class CraftingMaterialEntryView : MonoBehaviour {
         materialName.text = material.materialName;
         FormatMaterialAmount(material.materialAmount.ToString());
         materialID = material.materialID;
+        SetMaterialRowBackgroundColor();
     }
 
     private void FormatMaterialAmount(string materialAmount)
     {
         this.materialAmount.text = "X " + materialAmount;
+    }
+
+    private void SetMaterialRowBackgroundColor()
+    {
+        if(transform.GetSiblingIndex() % 2 != 0) {
+            rowBackground.CrossFadeAlpha(5, .1f, true);
+        }
+        else {
+            rowBackground.CrossFadeAlpha(0, .1f, true);
+        }
     }
 
     #region Events
