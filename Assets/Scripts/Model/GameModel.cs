@@ -280,6 +280,83 @@ public static class GameModel
         selectedWeapon.weaponStats.affinity = affinityValue;
     }
 
+    public static void AddElement()
+    {
+        int elementsEnumLenght = Enum.GetValues(typeof(Element)).Length;
+
+        for(int i = 0; i < elementsEnumLenght; i++) {
+            bool elementAlreadyPresent = false;
+
+            for(int j = 0; j < selectedWeapon.weaponStats.weaponElements.Count && !elementAlreadyPresent; j++) {
+                if((Element)i == selectedWeapon.weaponStats.weaponElements[j].elementType) {
+                    elementAlreadyPresent = true;
+                }
+            }
+
+            if(!elementAlreadyPresent) {
+                WeaponElement weaponElement = new WeaponElement((Element)i);
+                selectedWeapon.weaponStats.weaponElements.Add(weaponElement);
+                return;
+            }
+        }
+
+        Debug.LogWarning("No more elements available to add!");
+    }
+
+    public static void UpdateElementType(string elementType, int elementIndex)
+    {
+        if(selectedWeapon.weaponStats.weaponElements.Count < elementIndex) {
+            Debug.LogWarning($"Trying to update element type at index {elementIndex} but selected weapon has too little elements!");
+            return;
+        }
+
+        switch(elementType) {
+            case "None":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.None;
+                break;
+            case "Raw":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Raw;
+                break;
+            case "Fire":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Fire;
+                break;
+            case "Water":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Water;
+                break;
+            case "Thunder":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Thunder;
+                break;
+            case "Ice":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Ice;
+                break;
+            case "Dragon":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Dragon;
+                break;
+            case "Poison":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Poison;
+                break;
+            case "Sleep":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Sleep;
+                break;
+            case "Paralysis":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Paralysis;
+                break;
+            default:
+                Debug.LogError($"Trying to update element at index {elementIndex} to an invalid value: {elementType}");
+                break;
+        }
+    }
+
+    public static void UpdateElementValue(uint elementValue, int elementIndex)
+    {
+        if(selectedWeapon.weaponStats.weaponElements.Count < elementIndex) {
+            Debug.LogWarning($"Trying to update element value at index {elementIndex} but selected weapon has too little elements!");
+            return;
+        }
+
+        selectedWeapon.weaponStats.weaponElements[elementIndex].elementValue = elementValue;
+    }
+
     public static void UpdateDefenseValue(uint defenseValue)
     {
         selectedWeapon.weaponStats.defenseValue = defenseValue;
@@ -329,6 +406,24 @@ public static class GameModel
                 break;
             default:
                 Debug.LogError($"Trying to update shelling level to an invalid value: {shellingLevel}");
+                break;
+        }
+    }
+
+    public static void UpdateElderseal(string eldersealValue)
+    {
+        switch(eldersealValue) {
+            case "Low":
+                selectedWeapon.weaponStats.elderseal = ElderSeal.Low;
+                break;
+            case "Average":
+                selectedWeapon.weaponStats.elderseal = ElderSeal.Average;
+                break;
+            case "High":
+                selectedWeapon.weaponStats.elderseal = ElderSeal.High;
+                break;
+            default:
+                Debug.LogError($"Trying to update elderseal to an invalid value: {eldersealValue}");
                 break;
         }
     }

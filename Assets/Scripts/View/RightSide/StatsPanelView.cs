@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
 
 public class StatsPanelView : MonoBehaviour
 {
+    [Header("Header")]
     [SerializeField]
     private WeaponIconView weaponIcon;
 
     [SerializeField]
     private Toggle hasWeaponButton;
 
+    [Header("Simple statistics")]
     [SerializeField]
     private TMP_Dropdown rarityValue;
 
@@ -25,19 +28,6 @@ public class StatsPanelView : MonoBehaviour
     [SerializeField]
     private TMP_InputField affinity;
 
-    // TODO Create new classes
-    /*
-    [SerializeField]
-    private TextMeshProUGUI element;
-
-    [SerializeField]
-    private TextMeshProUGUI slots;
-
-    [SerializeField]
-    private TextMeshProUGUI skill;
-
-    */
-
     [SerializeField]
     private TMP_InputField defenseBonus;
 
@@ -50,6 +40,27 @@ public class StatsPanelView : MonoBehaviour
     [SerializeField]
     private TMP_Dropdown elderseal;
 
+    [Header("Elements objects")]
+    [SerializeField]
+    private Transform statsContentParent;
+
+    [SerializeField]
+    private ElementEntryView elementEntryViewPrefab;
+
+    [SerializeField]
+    private List<ElementEntryView> elementEntryViews;
+
+    private const int elementViewStartingSiblingIndex = 5;
+
+    // TODO Create new classes
+    /*
+    [SerializeField]
+    private TextMeshProUGUI slots;
+
+    [SerializeField]
+    private TextMeshProUGUI skill;
+
+    */
 
     public void ResetView()
     {
@@ -58,9 +69,18 @@ public class StatsPanelView : MonoBehaviour
         weaponIcon.UpdateRarityColour(0);
         attackValue.SetTextWithoutNotify(string.Empty);
 
+        // Sharpness
+        // SharpnessMAX
+        // Affinity
+
+        ResetElementList();
+
+        // Slots
+
         defenseBonus.SetTextWithoutNotify(string.Empty);
         shellingType.SetValueWithoutNotify(0);
         shellingLevel.SetValueWithoutNotify(0);
+        elderseal.SetValueWithoutNotify(0);
     }
 
     public void UpdateView(Weapon weapon)
@@ -70,10 +90,18 @@ public class StatsPanelView : MonoBehaviour
         weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
         attackValue.SetTextWithoutNotify(weapon.weaponStats.attackValue.ToString());
 
-        defenseBonus.SetTextWithoutNotify(weapon.weaponStats.defenseValue.ToString());
+        // Sharpness
+        // SharpnessMAX
+        // Affinity
 
+        UpdateElementList(weapon);
+
+        // Slots
+
+        defenseBonus.SetTextWithoutNotify(weapon.weaponStats.defenseValue.ToString());
         shellingType.SetValueWithoutNotify((int)weapon.weaponStats.shellingType);
         shellingLevel.SetValueWithoutNotify((int)weapon.weaponStats.shellingLevel);
+        elderseal.SetValueWithoutNotify((int)weapon.weaponStats.elderseal);
     }
 
     #region Events
@@ -103,9 +131,9 @@ public class StatsPanelView : MonoBehaviour
         GameController.instance.UpdateAffinityValue(affinityValue);
     }
 
-    public void OnElementChanged(TMP_Dropdown change)
+    public void OnElementAdded()
     {
-        // GameController.instance.UpdateElement(change.captionText.text);
+        GameController.instance.AddElement();
     }
 
     public void OnDefenseValueChanged(string defenseValue)
@@ -129,5 +157,32 @@ public class StatsPanelView : MonoBehaviour
     }
 
     #endregion
+
+    private void ResetElementList()
+    {
+        for(int i = 1; i < elementEntryViews.Count;) {
+            Destroy(elementEntryViews[i].gameObject);
+            elementEntryViews.RemoveAt(i);
+        }
+    }
+
+    private void UpdateElementList(Weapon weapon)
+    {
+        // Loop starts from 1 because the first element is always instantiated
+        for(int i = 0; i < weapon.weaponStats.weaponElements.Count; i++) {
+            if(i != 0) {
+                // Instantiate graphic elements
+                ElementEntryView elementEntryView = Instantiate(elementEntryViewPrefab, statsContentParent);
+                elementEntryView.transform.SetSiblingIndex(elementViewStartingSiblingIndex + i);
+                elementEntryViews.Add(elementEntryView);
+            }
+
+            Element elementType = weapon.weaponStats.weaponElements[i].elementType;
+            uint elementValue = weapon.weaponStats.weaponElements[i].elementValue;
+            elementEntryViews[i].UpdateElementEntry(elementType, elementValue);
+            
+            elementEntryViews[i].UpdateElementEntryIndex(i);
+        }
+    }
 
 }

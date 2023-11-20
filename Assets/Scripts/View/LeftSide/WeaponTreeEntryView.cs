@@ -50,7 +50,7 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
 
         UpdateWeaponRarity(weapon);
 
-        // Do other VIEW POPULATION (e.g. element, rarity, etc)
+        // Do other VIEW POPULATION (e.g. element, etc)
     }
 
     public void DeleteWeapon()

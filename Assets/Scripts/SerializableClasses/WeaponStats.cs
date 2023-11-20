@@ -7,7 +7,7 @@ public class WeaponStats {
     public float sharpness;     // Change to ENUM?
     public float sharpnessMax;  // Change to ENUM?
     public float affinity;
-    public Dictionary<Element, int> elements;
+    public List<WeaponElement> weaponElements;
     public bool hiddenElement;
     public List<Slot> slots;
     public uint defenseValue;
@@ -18,7 +18,8 @@ public class WeaponStats {
 
     public WeaponStats()
     {
-        elements = new Dictionary<Element, int>();
+        weaponElements = new List<WeaponElement>();
+        weaponElements.Add(new WeaponElement());
         slots = new List<Slot>();
     }
 }
@@ -35,19 +36,6 @@ public enum Rarity {
     Rarity9,
     Rarity10,
     RarityX
-}
-
-public enum Element {
-    None,
-    Raw,
-    Fire,
-    Water,
-    Thunder,
-    Ice,
-    Dragon,
-    Poison,
-    Sleep,
-    Paralysis
 }
 
 public enum ShellingLevel {

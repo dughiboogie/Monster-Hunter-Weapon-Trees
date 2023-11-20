@@ -1,36 +1,23 @@
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 
 public class StatEntryView : MonoBehaviour
 {
     [SerializeField]
-    private TMP_Dropdown statName;
+    private Image statRowBackground;
 
-    [SerializeField]
-    private TMP_Dropdown statEnumValue;
-
-    [SerializeField]
-    private TextMeshProUGUI statStringValue;
-
-    public void OnStatNameChange(TMP_Dropdown change)
+    private void Start()
     {
-        Debug.Log($"Dropdown value changed to {change.captionText.text}");
+        SetStatRowBackgroundColor();
     }
 
-    /*
-    private void PopulateStatNameDropdown()
+    private void SetStatRowBackgroundColor()
     {
-        statName.ClearOptions();
-        List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
-
-        for(int i = 0; i < GameModel.weaponStats.Length; i++) {
-            TMP_Dropdown.OptionData newOption = new TMP_Dropdown.OptionData();
-            newOption.text = GameModel.weaponStats[i].Name;
-            options.Add(newOption);
+        if(transform.GetSiblingIndex() % 2 != 0) {
+            statRowBackground.CrossFadeAlpha(5, .1f, true);
         }
-
-        statName.AddOptions(options);
+        else {
+            statRowBackground.CrossFadeAlpha(0, .1f, true);
+        }
     }
-    */
 }

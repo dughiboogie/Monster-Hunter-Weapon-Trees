@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.IO;
 
 public class PreviewPanelView : MonoBehaviour
 {
@@ -26,10 +25,7 @@ public class PreviewPanelView : MonoBehaviour
     public void ResetView()
     {
         weaponName.text = string.Empty;
-
-        // Reset weapon image
         ActivateUploadImageIcon(true);
-
         craftingMaterialsView.RemoveAllCraftingMaterials();
         FormatCraftingCost(string.Empty);
         ActivateAddMaterialButton(false);
@@ -39,7 +35,6 @@ public class PreviewPanelView : MonoBehaviour
     {
         weaponName.text = weapon.name;
 
-        // Load weapon image
         if(weapon.imagePath != string.Empty) {
             ActivateUploadImageIcon(false);
             UpdateWeaponImageTexture(weapon.imagePath);
@@ -73,6 +68,8 @@ public class PreviewPanelView : MonoBehaviour
 
     #endregion
 
+    #region ContextualUtils
+
     private void FormatCraftingCost(string craftingCost)
     {
         requiredCost.text = craftingCost + " z";
@@ -95,5 +92,7 @@ public class PreviewPanelView : MonoBehaviour
         ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(imagePath));
         weaponImage.texture = texture;
     }
+
+    #endregion
 
 }

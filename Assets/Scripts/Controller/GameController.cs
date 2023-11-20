@@ -207,25 +207,60 @@ public class GameController : MonoBehaviour
 
     public void UpdateAttackValue(string attackValue)
     {
+        if(attackValue == string.Empty) {
+            attackValue = "0";
+        }
         GameModel.UpdateAttackValue(uint.Parse(attackValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
-    public void UpdateSharpnessValue(string sharpnessValue) {
+    public void UpdateSharpnessValue(string sharpnessValue) 
+    {
+        if(sharpnessValue == string.Empty) {
+            sharpnessValue = "0";
+        }
         GameModel.UpdateSharpnessValue(float.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
     public void UpdateSharpnessMaxValue(string sharpnessMaxValue)
     {
+        if(sharpnessMaxValue == string.Empty) {
+            sharpnessMaxValue = "0";
+        }
         GameModel.UpdateSharpnessMaxValue(float.Parse(sharpnessMaxValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
     public void UpdateAffinityValue(string affinityValue)
     {
+        if(affinityValue == string.Empty) {
+            affinityValue = "0";
+        }
         GameModel.UpdateAffinityValue(float.Parse(affinityValue, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public void AddElement()
+    {
+        GameModel.AddElement();
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
+    }
+
+    public void UpdateElementType(string elementType, int elementIndex)
+    {
+        GameModel.UpdateElementType(elementType, elementIndex);
+    }
+
+    public void UpdateElementValue(string elementValue, int elementIndex)
+    {
+        if(elementValue == string.Empty) {
+            elementValue = "0";
+        }
+        GameModel.UpdateElementValue(uint.Parse(elementValue, System.Globalization.CultureInfo.InvariantCulture), elementIndex);
     }
 
     public void UpdateDefenseValue(string defenseValue)
     {
+        if(defenseValue == string.Empty) {
+            defenseValue = "0";
+        }
         GameModel.UpdateDefenseValue(uint.Parse(defenseValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
@@ -242,7 +277,7 @@ public class GameController : MonoBehaviour
 
     public void UpdateElderseal(string eldersealValue)
     {
-
+        GameModel.UpdateElderseal(eldersealValue);
     }
 
     #endregion
