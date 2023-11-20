@@ -335,6 +335,15 @@ public static class GameModel
 
     #endregion
 
+    #region Images
+
+    public static void UpdateSelectedWeaponImage(string imagePath)
+    {
+        selectedWeapon.imagePath = imagePath;
+    }
+
+    #endregion
+
     #region Getters
 
     public static Game GetCurrentGame()

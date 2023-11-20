@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.IO;
 
 public class PreviewPanelView : MonoBehaviour
 {
@@ -8,7 +9,10 @@ public class PreviewPanelView : MonoBehaviour
     private TMP_InputField weaponName;
 
     [SerializeField]
-    private Image weaponImage;
+    private RawImage weaponImage;
+
+    [SerializeField]
+    private Image uploadWeaponIcon;
 
     [SerializeField]
     private CraftingMaterialsListView craftingMaterialsView;
@@ -22,7 +26,11 @@ public class PreviewPanelView : MonoBehaviour
     public void ResetView()
     {
         weaponName.text = string.Empty;
+
         // Reset weapon image
+        weaponImage.gameObject.SetActive(false);
+        uploadWeaponIcon.gameObject.SetActive(true);
+
         craftingMaterialsView.RemoveAllCraftingMaterials();
         FormatCraftingCost(string.Empty);
         ActivateAddMaterialButton(false);
@@ -32,7 +40,20 @@ public class PreviewPanelView : MonoBehaviour
     {
         weaponName.text = weapon.name;
 
+
         // Load weapon image
+        if(weapon.imagePath != string.Empty) {
+            weaponImage.gameObject.SetActive(true);
+            uploadWeaponIcon.gameObject.SetActive(false);
+
+            byte[] imageData = File.ReadAllBytes(weapon.imagePath);
+            Texture2D texture = new Texture2D(256, 256);
+
+            ImageConversion.LoadImage(texture, imageData);
+
+            weaponImage.texture = texture;
+        }
+
 
         if(weapon.craftingCosts == null) {
             Debug.LogWarning($"This should not happen! CraftingCosts of weapon {weapon.weaponID} is null.");

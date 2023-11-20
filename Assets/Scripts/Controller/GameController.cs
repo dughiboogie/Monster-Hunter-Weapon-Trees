@@ -246,4 +246,14 @@ public class GameController : MonoBehaviour
     }
 
     #endregion
+
+    #region Images
+
+    public void UpdateSelectedWeaponImage(string imagePath)
+    {
+        GameModel.UpdateSelectedWeaponImage(imagePath);
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
+    }
+
+    #endregion
 }
