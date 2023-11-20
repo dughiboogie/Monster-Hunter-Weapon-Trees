@@ -10735,7 +10735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: {fileID: 2989169704984771746}
   weaponImage: {fileID: 8259571377856038938}
-  uploadWeaponIcon: {fileID: 1033553238}
+  uploadImageIcon: {fileID: 1033553238}
   craftingMaterialsView: {fileID: 4505038831682142280}
   requiredCost: {fileID: 6329803488542080642}
   AddMaterialButton: {fileID: 6982664273286393264}

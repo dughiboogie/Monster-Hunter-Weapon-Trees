@@ -12,7 +12,7 @@ public class PreviewPanelView : MonoBehaviour
     private RawImage weaponImage;
 
     [SerializeField]
-    private Image uploadWeaponIcon;
+    private Image uploadImageIcon;
 
     [SerializeField]
     private CraftingMaterialsListView craftingMaterialsView;
@@ -28,8 +28,7 @@ public class PreviewPanelView : MonoBehaviour
         weaponName.text = string.Empty;
 
         // Reset weapon image
-        weaponImage.gameObject.SetActive(false);
-        uploadWeaponIcon.gameObject.SetActive(true);
+        ActivateUploadImageIcon(true);
 
         craftingMaterialsView.RemoveAllCraftingMaterials();
         FormatCraftingCost(string.Empty);
@@ -40,20 +39,11 @@ public class PreviewPanelView : MonoBehaviour
     {
         weaponName.text = weapon.name;
 
-
         // Load weapon image
         if(weapon.imagePath != string.Empty) {
-            weaponImage.gameObject.SetActive(true);
-            uploadWeaponIcon.gameObject.SetActive(false);
-
-            byte[] imageData = File.ReadAllBytes(weapon.imagePath);
-            Texture2D texture = new Texture2D(256, 256);
-
-            ImageConversion.LoadImage(texture, imageData);
-
-            weaponImage.texture = texture;
+            ActivateUploadImageIcon(false);
+            UpdateWeaponImageTexture(weapon.imagePath);
         }
-
 
         if(weapon.craftingCosts == null) {
             Debug.LogWarning($"This should not happen! CraftingCosts of weapon {weapon.weaponID} is null.");
@@ -92,4 +82,18 @@ public class PreviewPanelView : MonoBehaviour
     {
         AddMaterialButton.interactable = activate;
     }
+
+    private void ActivateUploadImageIcon(bool activate)
+    {
+        uploadImageIcon.gameObject.SetActive(activate);
+        weaponImage.gameObject.SetActive(!activate);
+    }
+
+    private void UpdateWeaponImageTexture(string imagePath)
+    {
+        Texture2D texture = new Texture2D(256, 256);
+        ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(imagePath));
+        weaponImage.texture = texture;
+    }
+
 }

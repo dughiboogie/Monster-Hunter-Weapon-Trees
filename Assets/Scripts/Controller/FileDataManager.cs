@@ -59,4 +59,9 @@ public class FileDataManager : MonoBehaviour
 
         Debug.Log($"Data for {gameData.gameName} saved succesfully!");
     }
+
+    public byte[] GetImageDataFromPath(string imagePath)
+    {
+        return File.ReadAllBytes(imagePath);
+    }
 }
