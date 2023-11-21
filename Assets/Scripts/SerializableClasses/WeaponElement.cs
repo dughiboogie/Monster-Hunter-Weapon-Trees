@@ -3,6 +3,7 @@ public class WeaponElement
 {
     public Element elementType;
     public uint elementValue;
+    public bool hiddenElement;
 
     public WeaponElement(Element elementType = Element.None, uint elementValue = 0)
     {

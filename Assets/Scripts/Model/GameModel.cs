@@ -270,14 +270,14 @@ public static class GameModel
         selectedWeapon.weaponStats.attackValue = attackValue;
     }
 
-    public static void UpdateSharpnessValue(float sharpnessValue)
+    public static void UpdateSharpnessValue(SharpnessColour sharpnessColour, uint sharpnessValue)
     {
-        selectedWeapon.weaponStats.sharpness = sharpnessValue;
+        selectedWeapon.weaponStats.sharpnesses.Find(x => x.colour == sharpnessColour).value = sharpnessValue;
     }
 
-    public static void UpdateSharpnessMaxValue(float sharpnessMaxValue)
+    public static void UpdateSharpnessMaxValue(SharpnessColour sharpnessColour, uint sharpnessMaxValue)
     {
-        selectedWeapon.weaponStats.sharpnessMax = sharpnessMaxValue;
+        selectedWeapon.weaponStats.sharpnessesMax.Find(x => x.colour == sharpnessColour).value = sharpnessMaxValue;
     }
 
     public static void UpdateAffinityValue(float affinityValue)

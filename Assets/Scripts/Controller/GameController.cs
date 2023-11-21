@@ -218,20 +218,20 @@ public class GameController : MonoBehaviour
         GameModel.UpdateAttackValue(uint.Parse(attackValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
-    public void UpdateSharpnessValue(string sharpnessValue) 
+    public void UpdateSharpnessValue(SharpnessColour sharpnessColour, string sharpnessValue) 
     {
         if(sharpnessValue == string.Empty) {
             sharpnessValue = "0";
         }
-        GameModel.UpdateSharpnessValue(float.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
+        GameModel.UpdateSharpnessValue(sharpnessColour, uint.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
-    public void UpdateSharpnessMaxValue(string sharpnessMaxValue)
+    public void UpdateSharpnessMaxValue(SharpnessColour sharpnessColour, string sharpnessMaxValue)
     {
         if(sharpnessMaxValue == string.Empty) {
             sharpnessMaxValue = "0";
         }
-        GameModel.UpdateSharpnessMaxValue(float.Parse(sharpnessMaxValue, System.Globalization.CultureInfo.InvariantCulture));
+        GameModel.UpdateSharpnessMaxValue(sharpnessColour, uint.Parse(sharpnessMaxValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
     public void UpdateAffinityValue(string affinityValue)

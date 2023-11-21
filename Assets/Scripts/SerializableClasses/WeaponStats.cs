@@ -4,11 +4,10 @@ using System.Collections.Generic;
 public class WeaponStats {
     public Rarity rarity;
     public uint attackValue;
-    public float sharpness;     // Change to ENUM?
-    public float sharpnessMax;  // Change to ENUM?
+    public List<Sharpness> sharpnesses;
+    public List<Sharpness> sharpnessesMax;
     public float affinity;
     public List<WeaponElement> weaponElements;
-    public bool hiddenElement;
     public List<GemSlot> gemSlots;
     public uint defenseValue;
     public ShellingType shellingType;
@@ -18,6 +17,26 @@ public class WeaponStats {
 
     public WeaponStats()
     {
+        sharpnesses = new List<Sharpness>() {
+            new Sharpness(SharpnessColour.Red),
+            new Sharpness(SharpnessColour.Orange),
+            new Sharpness(SharpnessColour.Yellow),
+            new Sharpness(SharpnessColour.Green),
+            new Sharpness(SharpnessColour.Blue),
+            new Sharpness(SharpnessColour.White),
+            new Sharpness(SharpnessColour.Purple)
+        };
+
+        sharpnessesMax = new List<Sharpness>() {
+            new Sharpness(SharpnessColour.Red),
+            new Sharpness(SharpnessColour.Orange),
+            new Sharpness(SharpnessColour.Yellow),
+            new Sharpness(SharpnessColour.Green),
+            new Sharpness(SharpnessColour.Blue),
+            new Sharpness(SharpnessColour.White),
+            new Sharpness(SharpnessColour.Purple)
+        };
+
         weaponElements = new List<WeaponElement>();
         weaponElements.Add(new WeaponElement());
         gemSlots = new List<GemSlot>() { GemSlot.None, GemSlot.None, GemSlot.None };

@@ -56,6 +56,13 @@ public class StatsPanelView : MonoBehaviour
     [SerializeField]
     private List<GemSlotView> gemSlotViews;
 
+    [Header("Sharpness")]
+    [SerializeField]
+    private SharpnessView sharpnessView;
+
+    [SerializeField]
+    private SharpnessMaxView sharpnessMaxView;
+
     // TODO Create new classes
     /*
 
@@ -72,12 +79,13 @@ public class StatsPanelView : MonoBehaviour
         attackValue.SetTextWithoutNotify(string.Empty);
 
         // Sharpness
+        sharpnessView.ResetView();
+        sharpnessMaxView.ResetView();
+
         // SharpnessMAX
-        // Affinity
+        affinity.SetTextWithoutNotify(string.Empty);
 
         ResetElementList();
-
-        // Slots
         ResetGemSlotViews();
 
         defenseBonus.SetTextWithoutNotify(string.Empty);
@@ -94,12 +102,13 @@ public class StatsPanelView : MonoBehaviour
         attackValue.SetTextWithoutNotify(weapon.weaponStats.attackValue.ToString());
 
         // Sharpness
+        sharpnessView.UpdateView(weapon.weaponStats.sharpnesses);
+        sharpnessMaxView.UpdateView(weapon.weaponStats.sharpnessesMax);
+
         // SharpnessMAX
-        // Affinity
+        affinity.SetTextWithoutNotify(weapon.weaponStats.affinity.ToString() + "%");
 
         UpdateElementList(weapon);
-
-        // Slots
         UpdateGemSlotViews(weapon.weaponStats.gemSlots);
 
         defenseBonus.SetTextWithoutNotify(weapon.weaponStats.defenseValue.ToString());
@@ -125,19 +134,10 @@ public class StatsPanelView : MonoBehaviour
         GameController.instance.UpdateAttackValue(attackValue);
     }
 
-    public void OnSharpnessValueChanged(string sharpnessValue)
-    {
-        GameController.instance.UpdateSharpnessValue(sharpnessValue);
-    }
-
-    public void OnSharpnessMaxValueChanged(string sharpnessMaxValue)
-    {
-        GameController.instance.UpdateSharpnessMaxValue(sharpnessMaxValue);
-    }
-
     public void OnAffinityValueChanged(string affinityValue)
     {
         GameController.instance.UpdateAffinityValue(affinityValue);
+        affinity.SetTextWithoutNotify(affinityValue + "%");
     }
 
     public void OnElementAdded()
@@ -167,6 +167,8 @@ public class StatsPanelView : MonoBehaviour
 
     #endregion
 
+    #region Elements
+
     private void ResetElementList()
     {
         for(int i = 1; i < elementEntryViews.Count;) {
@@ -194,6 +196,10 @@ public class StatsPanelView : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Gem Slots
+
     private void ResetGemSlotViews()
     {
         foreach(var gemSlotView in gemSlotViews) {
@@ -207,5 +213,7 @@ public class StatsPanelView : MonoBehaviour
             gemSlotViews[i].UpdateGemSlotView(gemSlots[i]);
         }
     }
+
+    #endregion
 
 }
