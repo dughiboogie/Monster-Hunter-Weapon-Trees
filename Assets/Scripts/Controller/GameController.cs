@@ -261,6 +261,11 @@ public class GameController : MonoBehaviour
         GameModel.UpdateElementValue(uint.Parse(elementValue, System.Globalization.CultureInfo.InvariantCulture), elementIndex);
     }
 
+    public void HideElement(bool hidden, int elementIndex)
+    {
+        GameModel.HideElement(hidden, elementIndex);
+    }
+
     public void UpdateGemSlot(string gemSlotName, int gemSlotIndex)
     {
         GameModel.UpdateGemSlot(gemSlotName, gemSlotIndex);

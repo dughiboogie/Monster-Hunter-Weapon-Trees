@@ -171,6 +171,8 @@ public class StatsPanelView : MonoBehaviour
 
     private void ResetElementList()
     {
+        elementEntryViews[0].ResetView();
+
         for(int i = 1; i < elementEntryViews.Count;) {
             Destroy(elementEntryViews[i].gameObject);
             elementEntryViews.RemoveAt(i);
@@ -193,6 +195,7 @@ public class StatsPanelView : MonoBehaviour
             elementEntryViews[i].UpdateElementEntry(elementType, elementValue);
             
             elementEntryViews[i].UpdateElementEntryIndex(i);
+            elementEntryViews[i].UpdateElementHiddenText(weapon.weaponStats.weaponElements[i].hiddenElement);
         }
     }
 

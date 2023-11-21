@@ -1,8 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class ElementEntryView : StatEntryView
 {
+    [SerializeField]
+    private Toggle hiddenElementToggle;
+
     [SerializeField]
     private TMP_Dropdown elementType;
 
@@ -10,6 +14,13 @@ public class ElementEntryView : StatEntryView
     private TMP_InputField elementValue;
 
     private int elementIndex;
+
+    public void ResetView()
+    {
+        UpdateElementEntry(Element.None, 0);
+        UpdateElementHiddenText(false);
+        hiddenElementToggle.SetIsOnWithoutNotify(false);
+    }
 
     public void UpdateElementEntryIndex(int index)
     {
@@ -20,6 +31,19 @@ public class ElementEntryView : StatEntryView
     {
         elementType.SetValueWithoutNotify((int)element);
         elementValue.SetTextWithoutNotify(value.ToString());
+    }
+
+    public void UpdateElementHiddenText(bool hidden)
+    {
+        if(hidden) {
+            elementType.captionText.color = Color.gray;
+            elementValue.textComponent.color = Color.gray;
+        }
+        else {
+            elementType.captionText.color = Color.white;
+            elementValue.textComponent.color = Color.white;
+        }
+        hiddenElementToggle.SetIsOnWithoutNotify(hidden);
     }
 
     #region Events
@@ -34,5 +58,11 @@ public class ElementEntryView : StatEntryView
         GameController.instance.UpdateElementValue(value, elementIndex);
     }
 
-        #endregion
+    public void OnElementHidden(bool hidden)
+    {
+        GameController.instance.HideElement(hidden, elementIndex);
+        UpdateElementHiddenText(hidden);
+    }
+
+    #endregion
 }

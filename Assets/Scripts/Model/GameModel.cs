@@ -362,6 +362,11 @@ public static class GameModel
         selectedWeapon.weaponStats.weaponElements[elementIndex].elementValue = elementValue;
     }
 
+    public static void HideElement(bool hidden, int elementIndex)
+    {
+        selectedWeapon.weaponStats.weaponElements[elementIndex].hiddenElement = hidden;
+    }
+
     public static void UpdateGemSlot(string gemSlotName, int gemSlotIndex)
     {
         switch(gemSlotName) {
