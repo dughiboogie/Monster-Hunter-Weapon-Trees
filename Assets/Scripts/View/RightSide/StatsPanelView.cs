@@ -52,10 +52,12 @@ public class StatsPanelView : MonoBehaviour
 
     private const int elementViewStartingSiblingIndex = 5;
 
+    [Header("Gem slots")]
+    [SerializeField]
+    private List<GemSlotView> gemSlotViews;
+
     // TODO Create new classes
     /*
-    [SerializeField]
-    private TextMeshProUGUI slots;
 
     [SerializeField]
     private TextMeshProUGUI skill;
@@ -76,6 +78,7 @@ public class StatsPanelView : MonoBehaviour
         ResetElementList();
 
         // Slots
+        ResetGemSlotViews();
 
         defenseBonus.SetTextWithoutNotify(string.Empty);
         shellingType.SetValueWithoutNotify(0);
@@ -97,6 +100,7 @@ public class StatsPanelView : MonoBehaviour
         UpdateElementList(weapon);
 
         // Slots
+        UpdateGemSlotViews(weapon.weaponStats.gemSlots);
 
         defenseBonus.SetTextWithoutNotify(weapon.weaponStats.defenseValue.ToString());
         shellingType.SetValueWithoutNotify((int)weapon.weaponStats.shellingType);
@@ -105,6 +109,11 @@ public class StatsPanelView : MonoBehaviour
     }
 
     #region Events
+
+    public void OnHasWeaponToggled(bool active)
+    {
+        GameController.instance.UpdateHasWeapon(active);
+    }
 
     public void OnRarityChanged(TMP_Dropdown change)
     {
@@ -182,6 +191,20 @@ public class StatsPanelView : MonoBehaviour
             elementEntryViews[i].UpdateElementEntry(elementType, elementValue);
             
             elementEntryViews[i].UpdateElementEntryIndex(i);
+        }
+    }
+
+    private void ResetGemSlotViews()
+    {
+        foreach(var gemSlotView in gemSlotViews) {
+            gemSlotView.ResetGemSlotView();
+        }
+    }
+
+    private void UpdateGemSlotViews(List<GemSlot> gemSlots)
+    {
+        for(int i = 0; i < gemSlots.Count; i++) {
+            gemSlotViews[i].UpdateGemSlotView(gemSlots[i]);
         }
     }
 

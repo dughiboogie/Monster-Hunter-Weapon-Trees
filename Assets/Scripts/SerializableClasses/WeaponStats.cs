@@ -9,7 +9,7 @@ public class WeaponStats {
     public float affinity;
     public List<WeaponElement> weaponElements;
     public bool hiddenElement;
-    public List<Slot> slots;
+    public List<GemSlot> gemSlots;
     public uint defenseValue;
     public ShellingType shellingType;
     public ShellingLevel shellingLevel;
@@ -20,7 +20,7 @@ public class WeaponStats {
     {
         weaponElements = new List<WeaponElement>();
         weaponElements.Add(new WeaponElement());
-        slots = new List<Slot>();
+        gemSlots = new List<GemSlot>() { GemSlot.None, GemSlot.None, GemSlot.None };
     }
 }
 
@@ -54,7 +54,7 @@ public enum ShellingType {
     Long
 }
 
-public enum Slot {
+public enum GemSlot {
     None,
     Simple,
     Small,

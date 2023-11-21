@@ -111,6 +111,11 @@ public static class GameModel
         selectedWeapon = null;
     }
 
+    public static void UpdateHasWeapon(bool active)
+    {
+        selectedWeapon.hasWeapon = active;
+    }
+
     #endregion
 
     #region WeaponEvolution
@@ -355,6 +360,30 @@ public static class GameModel
         }
 
         selectedWeapon.weaponStats.weaponElements[elementIndex].elementValue = elementValue;
+    }
+
+    public static void UpdateGemSlot(string gemSlotName, int gemSlotIndex)
+    {
+        switch(gemSlotName) {
+            case "gem_level_0":
+                selectedWeapon.weaponStats.gemSlots[gemSlotIndex] = GemSlot.None;
+                break;
+            case "gem_level_1":
+                selectedWeapon.weaponStats.gemSlots[gemSlotIndex] = GemSlot.Simple;
+                break;
+            case "gem_level_2":
+                selectedWeapon.weaponStats.gemSlots[gemSlotIndex] = GemSlot.Small;
+                break;
+            case "gem_level_3":
+                selectedWeapon.weaponStats.gemSlots[gemSlotIndex] = GemSlot.Medium;
+                break;
+            case "gem_level_4":
+                selectedWeapon.weaponStats.gemSlots[gemSlotIndex] = GemSlot.Big;
+                break;
+            default:
+                Debug.LogError($"Trying to update gem slot at index {gemSlotIndex} to an invalid value: {gemSlotName}");
+                break;
+        }
     }
 
     public static void UpdateDefenseValue(uint defenseValue)

@@ -141,6 +141,11 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void UpdateHasWeapon(bool active)
+    {
+        GameModel.UpdateHasWeapon(active);
+    }
+
     #endregion
 
     #region WeaponEvolution
@@ -254,6 +259,11 @@ public class GameController : MonoBehaviour
             elementValue = "0";
         }
         GameModel.UpdateElementValue(uint.Parse(elementValue, System.Globalization.CultureInfo.InvariantCulture), elementIndex);
+    }
+
+    public void UpdateGemSlot(string gemSlotName, int gemSlotIndex)
+    {
+        GameModel.UpdateGemSlot(gemSlotName, gemSlotIndex);
     }
 
     public void UpdateDefenseValue(string defenseValue)
