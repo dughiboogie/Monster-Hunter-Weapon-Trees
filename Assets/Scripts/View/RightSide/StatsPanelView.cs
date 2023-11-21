@@ -40,6 +40,9 @@ public class StatsPanelView : MonoBehaviour
     [SerializeField]
     private TMP_Dropdown elderseal;
 
+    [SerializeField]
+    private TMP_InputField skillName;
+
     [Header("Elements objects")]
     [SerializeField]
     private Transform statsContentParent;
@@ -63,26 +66,14 @@ public class StatsPanelView : MonoBehaviour
     [SerializeField]
     private SharpnessMaxView sharpnessMaxView;
 
-    // TODO Create new classes
-    /*
-
-    [SerializeField]
-    private TextMeshProUGUI skill;
-
-    */
-
     public void ResetView()
     {
         hasWeaponButton.isOn = false;
         rarityValue.SetValueWithoutNotify(0);
         weaponIcon.UpdateRarityColour(0);
         attackValue.SetTextWithoutNotify(string.Empty);
-
-        // Sharpness
         sharpnessView.ResetView();
         sharpnessMaxView.ResetView();
-
-        // SharpnessMAX
         affinity.SetTextWithoutNotify(string.Empty);
 
         ResetElementList();
@@ -92,6 +83,7 @@ public class StatsPanelView : MonoBehaviour
         shellingType.SetValueWithoutNotify(0);
         shellingLevel.SetValueWithoutNotify(0);
         elderseal.SetValueWithoutNotify(0);
+        skillName.SetTextWithoutNotify(string.Empty);
     }
 
     public void UpdateView(Weapon weapon)
@@ -100,12 +92,8 @@ public class StatsPanelView : MonoBehaviour
         rarityValue.SetValueWithoutNotify((int)weapon.weaponStats.rarity);
         weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
         attackValue.SetTextWithoutNotify(weapon.weaponStats.attackValue.ToString());
-
-        // Sharpness
         sharpnessView.UpdateView(weapon.weaponStats.sharpnesses);
         sharpnessMaxView.UpdateView(weapon.weaponStats.sharpnessesMax);
-
-        // SharpnessMAX
         affinity.SetTextWithoutNotify(weapon.weaponStats.affinity.ToString() + "%");
 
         UpdateElementList(weapon);
@@ -115,6 +103,7 @@ public class StatsPanelView : MonoBehaviour
         shellingType.SetValueWithoutNotify((int)weapon.weaponStats.shellingType);
         shellingLevel.SetValueWithoutNotify((int)weapon.weaponStats.shellingLevel);
         elderseal.SetValueWithoutNotify((int)weapon.weaponStats.elderseal);
+        skillName.SetTextWithoutNotify(weapon.weaponStats.skill);
     }
 
     #region Events
@@ -163,6 +152,11 @@ public class StatsPanelView : MonoBehaviour
     public void OnEldersealChanged(TMP_Dropdown change)
     {
         GameController.instance.UpdateElderseal(change.captionText.text);
+    }
+
+    public void OnSkillNameChange(string skillName)
+    {
+        GameController.instance.UpdateSkillName(skillName);
     }
 
     #endregion

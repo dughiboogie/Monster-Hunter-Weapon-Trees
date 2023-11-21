@@ -295,6 +295,11 @@ public class GameController : MonoBehaviour
         GameModel.UpdateElderseal(eldersealValue);
     }
 
+    public void UpdateSkillName(string skillName)
+    {
+        GameModel.UpdateSkillName(skillName);
+    }
+
     #endregion
 
     #region Images

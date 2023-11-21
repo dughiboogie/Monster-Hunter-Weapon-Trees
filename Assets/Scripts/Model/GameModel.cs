@@ -462,6 +462,11 @@ public static class GameModel
         }
     }
 
+    public static void UpdateSkillName(string skillName)
+    {
+        selectedWeapon.weaponStats.skill = skillName;
+    }
+
     #endregion
 
     #region Images

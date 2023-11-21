@@ -13,7 +13,7 @@ public class WeaponStats {
     public ShellingType shellingType;
     public ShellingLevel shellingLevel;
     public ElderSeal elderseal;
-    public Skill skill;
+    public string skill;
 
     public WeaponStats()
     {
@@ -82,11 +82,6 @@ public enum GemSlot {
     MAX,
     Square,
     Why
-}
-
-public enum Skill {
-    None,
-    TestSkill
 }
 
 public enum ElderSeal {
