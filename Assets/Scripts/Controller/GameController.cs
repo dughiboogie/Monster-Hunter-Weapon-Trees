@@ -4,18 +4,20 @@ using TMPro;
 /*
  * This class is responsible for taking user's requests and dispatching them to the right owner
  */
-public class GameController : MonoBehaviour
-{
+public class GameController : MonoBehaviour {
     public static GameController instance;
 
     [SerializeField]
-    private TMP_InputField windowName;
+    private HeaderView headerView;
 
     [SerializeField]
     private GameWeaponTreesView gameWeaponTreesView;
 
     [SerializeField]
     private DetailsView detailsView;
+
+    private float currentRawDamageMultiplier = 1.0f;
+    private float currentElementalDamageMultiplier = 1.0f;
 
     #region Singleton
     private void Awake()
@@ -30,32 +32,79 @@ public class GameController : MonoBehaviour
 
     #region Game
 
-    public void CreateNewGame(string gameName = "", float rawDamageMultiplier = 1.0f, float elementalDamageMultiplier = 1.0f)
+    public void CreateNewGame()
     {
-        GameModel.CreateNewGame(gameName, rawDamageMultiplier, elementalDamageMultiplier);
+        GameModel.CreateNewGame();
     }
 
     public void LoadGame(string gameName)
     {
         GameModel.LoadGame(gameName);
-        windowName.text = gameName;
+        headerView.UpdateGameNameView(gameName);
 
         InstantiateWeaponTreeViews();
     }
 
-    // TODO Create new class HeaderView and move this method there?
-    public void UpdateGameName(string newGameName)
+    public void UpdateGameName(string gameName)
     {
-        if(GameModel.GetCurrentGame() == null) {
-            CreateNewGame();
-        }
-
-        GameModel.UpdateGameName(newGameName);
+        GameModel.UpdateGameName(gameName);
     }
 
     public void SaveGame()
     {
-        GameModel.SaveGame();
+        if(!GameModel.SaveGame()) {
+            headerView.ShowSaveErrorMessage();
+        }
+    }
+
+    #endregion
+
+    #region DamageMultipliers
+
+    public void ToggleRawDamageMultiplier(bool active)
+    {
+        if(active) {
+            currentRawDamageMultiplier = GameModel.GetCurrentGame().rawDamageMultiplier;
+        }
+        else {
+            currentRawDamageMultiplier = 1.0f;
+        }
+        if(GameModel.GetSelectedWeapon() != null) {
+            detailsView.UpdateView(GameModel.GetSelectedWeapon());
+        }
+    }
+
+    public void UpdateRawDamageMultiplierValue(string value)
+    {
+        GameModel.UpdateRawDamageMultiplierValue(float.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public void ToggleElementalDamageMultiplier(bool active)
+    {
+        if(active) {
+            currentElementalDamageMultiplier = GameModel.GetCurrentGame().elementalDamageMultiplier;
+        }
+        else {
+            currentElementalDamageMultiplier = 1.0f;
+        }
+        if(GameModel.GetSelectedWeapon() != null) {
+            detailsView.UpdateView(GameModel.GetSelectedWeapon());
+        }
+    }
+
+    public void UpdateElementalDamageMultiplierValue(string value)
+    {
+        GameModel.UpdateElementalDamageMultiplierValue(float.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public float GetCurrentRawDamageMultiplier()
+    {
+        return currentRawDamageMultiplier;
+    }
+
+    public float GetCurrentElementalDamageMultiplier()
+    {
+        return currentElementalDamageMultiplier;
     }
 
     #endregion
@@ -64,10 +113,6 @@ public class GameController : MonoBehaviour
 
     public void AddWeaponTree()
     {
-        if(GameModel.GetCurrentGame() == null) {
-            CreateNewGame();
-        }
-
         gameWeaponTreesView.AddWeaponTreeView(GameModel.AddWeaponTree());
     }
 

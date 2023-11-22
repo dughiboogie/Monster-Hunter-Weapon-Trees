@@ -27,7 +27,7 @@ public class ElementEntryView : StatEntryView
         elementIndex = index;
     }
 
-    public void UpdateElementEntry(Element element, uint value)
+    public void UpdateElementEntry(Element element, float value)
     {
         elementType.SetValueWithoutNotify((int)element);
         elementValue.SetTextWithoutNotify(value.ToString());

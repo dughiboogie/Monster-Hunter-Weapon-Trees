@@ -15,14 +15,9 @@ public static class GameModel
 
     #region Game
 
-    public static void CreateNewGame(string gameName, float rawDamageMultiplier, float elementalDamageMultiplier)
+    public static void CreateNewGame()
     {
         currentGame = new Game();
-        currentGame.gameName = gameName;
-        currentGame.gameRawDamageMultiplier = rawDamageMultiplier;
-        currentGame.gameElementalDamageMultiplier = elementalDamageMultiplier;
-
-        currentGame.weaponTrees = new List<WeaponTree>();
     }
 
     public static void LoadGame(string gameName)
@@ -30,14 +25,40 @@ public static class GameModel
         currentGame = FileDataManager.instance.GetGameData(gameName);
     }
 
-    public static void UpdateGameName(string newGameName)
+    public static void UpdateGameName(string gameName)
     {
-        currentGame.gameName = newGameName;
+        currentGame.gameName = gameName;
     }
 
-    public static void SaveGame()
+    public static bool SaveGame()
     {
-        FileDataManager.instance.WriteGameDataFile(currentGame);
+        if(currentGame.gameName == string.Empty) {
+            return false;
+        }
+        else {
+            try {
+                FileDataManager.instance.WriteGameDataFile(currentGame);
+                return true;
+            }
+            catch(Exception e) {
+                Debug.LogError($"Couldn't save current game file: {e.Message}");
+                throw;
+            }
+        }
+    }
+
+    #endregion
+
+    #region DamageMultipiers
+
+    public static void UpdateRawDamageMultiplierValue(float value)
+    {
+        currentGame.rawDamageMultiplier = value;
+    }
+
+    public static void UpdateElementalDamageMultiplierValue(float value)
+    {
+        currentGame.elementalDamageMultiplier = value;
     }
 
     #endregion

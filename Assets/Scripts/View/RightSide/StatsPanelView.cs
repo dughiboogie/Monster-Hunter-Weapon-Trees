@@ -68,7 +68,7 @@ public class StatsPanelView : MonoBehaviour
 
     public void ResetView()
     {
-        hasWeaponButton.isOn = false;
+        hasWeaponButton.SetIsOnWithoutNotify(false);
         rarityValue.SetValueWithoutNotify(0);
         weaponIcon.UpdateRarityColour(0);
         attackValue.SetTextWithoutNotify(string.Empty);
@@ -88,10 +88,10 @@ public class StatsPanelView : MonoBehaviour
 
     public void UpdateView(Weapon weapon)
     {
-        hasWeaponButton.isOn = weapon.hasWeapon;
+        hasWeaponButton.SetIsOnWithoutNotify(weapon.hasWeapon);
         rarityValue.SetValueWithoutNotify((int)weapon.weaponStats.rarity);
         weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
-        attackValue.SetTextWithoutNotify(weapon.weaponStats.attackValue.ToString());
+        attackValue.SetTextWithoutNotify((weapon.weaponStats.attackValue * GameController.instance.GetCurrentRawDamageMultiplier()).ToString());
         sharpnessView.UpdateView(weapon.weaponStats.sharpnesses);
         sharpnessMaxView.UpdateView(weapon.weaponStats.sharpnessesMax);
         affinity.SetTextWithoutNotify(weapon.weaponStats.affinity.ToString() + "%");
@@ -185,7 +185,7 @@ public class StatsPanelView : MonoBehaviour
             }
 
             Element elementType = weapon.weaponStats.weaponElements[i].elementType;
-            uint elementValue = weapon.weaponStats.weaponElements[i].elementValue;
+            var elementValue = weapon.weaponStats.weaponElements[i].elementValue * GameController.instance.GetCurrentElementalDamageMultiplier();
             elementEntryViews[i].UpdateElementEntry(elementType, elementValue);
             
             elementEntryViews[i].UpdateElementEntryIndex(i);
