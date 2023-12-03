@@ -22,8 +22,7 @@ public class FileDataManager : MonoBehaviour
         GetGamesDataFromFolder();
     }
 
-    // TODO Call this every time the splash page is opened
-    private List<Game> GetGamesDataFromFolder()
+    public List<Game> GetGamesDataFromFolder()
     {
         gamesData.Clear();
 

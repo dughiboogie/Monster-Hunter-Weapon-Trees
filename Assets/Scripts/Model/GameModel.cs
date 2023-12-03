@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -13,7 +12,14 @@ public static class GameModel
     private static Weapon dragStartWeapon;
     private static Weapon dragEndWeapon;
 
+    public static bool IsDirty { get; set; }
+
     #region Game
+
+    public static void ResetGame()
+    {
+        currentGame = null;
+    }
 
     public static void CreateNewGame()
     {
@@ -22,12 +28,17 @@ public static class GameModel
 
     public static void LoadGame(string gameName)
     {
+        if(IsDirty) {
+            FileDataManager.instance.GetGamesDataFromFolder();
+            IsDirty = false;
+        }
         currentGame = FileDataManager.instance.GetGameData(gameName);
     }
 
     public static void UpdateGameName(string gameName)
     {
         currentGame.gameName = gameName;
+        IsDirty = true;
     }
 
     public static bool SaveGame()
@@ -38,6 +49,7 @@ public static class GameModel
         else {
             try {
                 FileDataManager.instance.WriteGameDataFile(currentGame);
+                IsDirty = false;
                 return true;
             }
             catch(Exception e) {
@@ -54,11 +66,13 @@ public static class GameModel
     public static void UpdateRawDamageMultiplierValue(float value)
     {
         currentGame.rawDamageMultiplier = value;
+        IsDirty = true;
     }
 
     public static void UpdateElementalDamageMultiplierValue(float value)
     {
         currentGame.elementalDamageMultiplier = value;
+        IsDirty = true;
     }
 
     #endregion
@@ -69,6 +83,7 @@ public static class GameModel
     {
         WeaponTree weaponTree = new WeaponTree(currentGame.weaponTrees.Count);
         currentGame.weaponTrees.Add(weaponTree);
+        IsDirty = true;
         return weaponTree;
     }
 
@@ -80,6 +95,7 @@ public static class GameModel
                 return;
             }
         }
+        IsDirty = true;
     }
 
     public static void UpdateWeaponTreeName(UniqueID weaponTreeID, string weaponTreeName)
@@ -87,6 +103,7 @@ public static class GameModel
         foreach(WeaponTree weaponTree in currentGame.weaponTrees) {
             if(weaponTreeID == weaponTree.weaponTreeID) {
                 weaponTree.weaponTreeName = weaponTreeName;
+                IsDirty = true;
                 return;
             }
         }
@@ -100,6 +117,7 @@ public static class GameModel
     {
         Weapon weapon = new Weapon(weaponCoordinates);
         currentGame.weaponTrees[weaponCoordinates.y].weapons.Add(weapon);
+        IsDirty = true;
         return weapon;
     }
 
@@ -117,11 +135,13 @@ public static class GameModel
     public static void UpdateWeaponName(string weaponName)
     {
         selectedWeapon.name = weaponName;
+        IsDirty = true;
     }
 
     public static void UpdateWeaponCost(uint weaponCost)
     {
         selectedWeapon.craftingCosts.coinCost = weaponCost;
+        IsDirty = true;
     }
 
     public static void DeleteSelectedWeapon()
@@ -130,11 +150,13 @@ public static class GameModel
 
         currentGame.weaponTrees[selectedWeapon.weaponCoordinates.y].weapons.Remove(selectedWeapon);
         selectedWeapon = null;
+        IsDirty = true;
     }
 
     public static void UpdateHasWeapon(bool active)
     {
         selectedWeapon.hasWeapon = active;
+        IsDirty = true;
     }
 
     #endregion
@@ -190,6 +212,7 @@ public static class GameModel
             dragStartWeapon.previousWeaponEvolutionID.value = dragEndWeapon.weaponID.value;
             GameController.instance.OnWeaponEvolutionUpdated(dragEndWeapon.weaponCoordinates, dragStartWeapon.weaponCoordinates);
         }
+        IsDirty = true;
     }
 
     private static void RemoveWeaponNextEvolutions()
@@ -207,6 +230,7 @@ public static class GameModel
     public static void DeleteWeaponPreviousEvolution()
     {
         selectedWeapon.previousWeaponEvolutionID.value = string.Empty;
+        IsDirty = true;
     }
 
     #endregion
@@ -217,17 +241,20 @@ public static class GameModel
     {
         CraftingMaterial craftingMaterial = new CraftingMaterial();
         selectedWeapon.craftingCosts.materials.Add(craftingMaterial);
+        IsDirty = true;
         return craftingMaterial;
     }
 
     public static void UpdateMaterialName(string materialName, UniqueID materialID)
     {
         selectedWeapon.craftingCosts.materials.Find(x => x.materialID.value == materialID.value).materialName = materialName;
+        IsDirty = true;
     }
 
     public static void UpdateMaterialAmount(uint materialAmount, UniqueID materialID)
     {
         selectedWeapon.craftingCosts.materials.Find(x => x.materialID.value == materialID.value).materialAmount = materialAmount;
+        IsDirty = true;
     }
 
     public static void RemoveMaterial(UniqueID materialID)
@@ -238,6 +265,7 @@ public static class GameModel
                 return;
             }
         }
+        IsDirty = true;
     }
 
     #endregion
@@ -277,6 +305,12 @@ public static class GameModel
             case "Rarity 10":
                 selectedWeapon.weaponStats.rarity = Rarity.Rarity10;
                 break;
+            case "Rarity 11":
+                selectedWeapon.weaponStats.rarity = Rarity.Rarity11;
+                break;
+            case "Rarity 12":
+                selectedWeapon.weaponStats.rarity = Rarity.Rarity12;
+                break;
             case "Rarity X":
                 selectedWeapon.weaponStats.rarity = Rarity.RarityX;
                 break;
@@ -284,26 +318,37 @@ public static class GameModel
                 Debug.LogError($"Trying to update rarity to an invalid value: {rarity}");
                 break;
         }
+        IsDirty = true;
     }
 
     public static void UpdateAttackValue(uint attackValue)
     {
         selectedWeapon.weaponStats.attackValue = attackValue;
+        IsDirty = true;
     }
 
     public static void UpdateSharpnessValue(SharpnessColour sharpnessColour, uint sharpnessValue)
     {
         selectedWeapon.weaponStats.sharpnesses.Find(x => x.colour == sharpnessColour).value = sharpnessValue;
+        IsDirty = true;
+    }
+
+    public static void UpdateSharpnessUpdateValue(SharpnessColour sharpnessColour, uint sharpnessValue)
+    {
+        selectedWeapon.weaponStats.sharpnessesUpdate.Find(x => x.colour == sharpnessColour).value = sharpnessValue;
+        IsDirty = true;
     }
 
     public static void UpdateSharpnessMaxValue(SharpnessColour sharpnessColour, uint sharpnessMaxValue)
     {
         selectedWeapon.weaponStats.sharpnessesMax.Find(x => x.colour == sharpnessColour).value = sharpnessMaxValue;
+        IsDirty = true;
     }
 
     public static void UpdateAffinityValue(float affinityValue)
     {
         selectedWeapon.weaponStats.affinity = affinityValue;
+        IsDirty = true;
     }
 
     public static void AddElement()
@@ -322,6 +367,7 @@ public static class GameModel
             if(!elementAlreadyPresent) {
                 WeaponElement weaponElement = new WeaponElement((Element)i);
                 selectedWeapon.weaponStats.weaponElements.Add(weaponElement);
+                IsDirty = true;
                 return;
             }
         }
@@ -367,10 +413,14 @@ public static class GameModel
             case "Paralysis":
                 selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Paralysis;
                 break;
+            case "Blast":
+                selectedWeapon.weaponStats.weaponElements[elementIndex].elementType = Element.Blast;
+                break;
             default:
                 Debug.LogError($"Trying to update element at index {elementIndex} to an invalid value: {elementType}");
                 break;
         }
+        IsDirty = true;
     }
 
     public static void UpdateElementValue(uint elementValue, int elementIndex)
@@ -381,11 +431,13 @@ public static class GameModel
         }
 
         selectedWeapon.weaponStats.weaponElements[elementIndex].elementValue = elementValue;
+        IsDirty = true;
     }
 
     public static void HideElement(bool hidden, int elementIndex)
     {
         selectedWeapon.weaponStats.weaponElements[elementIndex].hiddenElement = hidden;
+        IsDirty = true;
     }
 
     public static void UpdateGemSlot(string gemSlotName, int gemSlotIndex)
@@ -406,15 +458,26 @@ public static class GameModel
             case "gem_level_4":
                 selectedWeapon.weaponStats.gemSlots[gemSlotIndex] = GemSlot.Big;
                 break;
+            case "gem_level_5":
+                selectedWeapon.weaponStats.gemSlots[gemSlotIndex] = GemSlot.MAX;
+                break;
+            case "gem_level_6":
+                selectedWeapon.weaponStats.gemSlots[gemSlotIndex] = GemSlot.GRank;
+                break;
+            case "gem_level_7":
+                selectedWeapon.weaponStats.gemSlots[gemSlotIndex] = GemSlot.Exotic;
+                break;
             default:
                 Debug.LogError($"Trying to update gem slot at index {gemSlotIndex} to an invalid value: {gemSlotName}");
                 break;
         }
+        IsDirty = true;
     }
 
     public static void UpdateDefenseValue(uint defenseValue)
     {
         selectedWeapon.weaponStats.defenseValue = defenseValue;
+        IsDirty = true;
     }
 
     public static void UpdateShellingType(string shellingType)
@@ -433,6 +496,7 @@ public static class GameModel
                 Debug.LogError($"Trying to update shelling type to an invalid value: {shellingType}");
                 break;
         }
+        IsDirty = true;
     }
 
     public static void UpdateShellingLevel(string shellingLevel)
@@ -463,11 +527,15 @@ public static class GameModel
                 Debug.LogError($"Trying to update shelling level to an invalid value: {shellingLevel}");
                 break;
         }
+        IsDirty = true;
     }
 
     public static void UpdateElderseal(string eldersealValue)
     {
         switch(eldersealValue) {
+            case "None":
+                selectedWeapon.weaponStats.elderseal = ElderSeal.None;
+                break;
             case "Low":
                 selectedWeapon.weaponStats.elderseal = ElderSeal.Low;
                 break;
@@ -481,11 +549,13 @@ public static class GameModel
                 Debug.LogError($"Trying to update elderseal to an invalid value: {eldersealValue}");
                 break;
         }
+        IsDirty = true;
     }
 
     public static void UpdateSkillName(string skillName)
     {
         selectedWeapon.weaponStats.skill = skillName;
+        IsDirty = true;
     }
 
     #endregion
@@ -495,6 +565,7 @@ public static class GameModel
     public static void UpdateSelectedWeaponImage(string imagePath)
     {
         selectedWeapon.imagePath = imagePath;
+        IsDirty = true;
     }
 
     #endregion

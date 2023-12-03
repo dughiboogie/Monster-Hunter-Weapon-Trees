@@ -11,14 +11,17 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
         set
         {
             isSelected = value;
-            ActivateCellBackground(isSelected);
+            ActivateWeaponSelectedBackground(isSelected);
         }
     }
 
     public bool isWeaponPresent = false;
 
     [SerializeField]
-    private Image cellBackground;
+    private Image weaponSelectedBackground;
+
+    [SerializeField]
+    private Image weaponOwnedBackground;
 
     [SerializeField]
     private WeaponIconView weaponIcon;
@@ -49,6 +52,7 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
         }
 
         UpdateWeaponRarity(weapon);
+        ActivateWeaponOwnedBackground(weapon.hasWeapon);
 
         // Do other VIEW POPULATION (e.g. element, etc)
     }
@@ -61,12 +65,18 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
 
         weaponIcon.gameObject.SetActive(false);
         CancelEvolutionLine();
-        ActivateCellBackground(false);
+        ActivateWeaponSelectedBackground(false);
+        ActivateWeaponOwnedBackground(false);
     }
 
     public void UpdateWeaponRarity(Weapon weapon)
     {
         weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
+    }
+
+    public void UpdateWeaponOwnershipView(bool owns)
+    {
+        ActivateWeaponOwnedBackground(owns);
     }
 
     #region EvolutionLines
@@ -92,7 +102,7 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
     public void OnPointerEnter()
     {
         if(!isSelected) {
-            ActivateCellBackground(true);
+            ActivateWeaponSelectedBackground(true);
         }
 
         if(isDragging) {
@@ -105,7 +115,7 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
     public void OnPointerExit()
     {
         if(!isSelected) {
-            ActivateCellBackground(false);
+            ActivateWeaponSelectedBackground(false);
         }
     }
 
@@ -138,8 +148,13 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
 
     #endregion
 
-    private void ActivateCellBackground(bool activate)
+    private void ActivateWeaponSelectedBackground(bool activate)
     {
-        cellBackground.gameObject.SetActive(activate);
+        weaponSelectedBackground.gameObject.SetActive(activate);
+    }
+
+    private void ActivateWeaponOwnedBackground(bool activate)
+    {
+        weaponOwnedBackground.gameObject.SetActive(activate);
     }
 }

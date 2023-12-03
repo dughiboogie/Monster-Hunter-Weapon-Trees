@@ -5,6 +5,7 @@ public class WeaponStats {
     public Rarity rarity;
     public uint attackValue;
     public List<Sharpness> sharpnesses;
+    public List<Sharpness> sharpnessesUpdate;
     public List<Sharpness> sharpnessesMax;
     public float affinity;
     public List<WeaponElement> weaponElements;
@@ -18,6 +19,16 @@ public class WeaponStats {
     public WeaponStats()
     {
         sharpnesses = new List<Sharpness>() {
+            new Sharpness(SharpnessColour.Red),
+            new Sharpness(SharpnessColour.Orange),
+            new Sharpness(SharpnessColour.Yellow),
+            new Sharpness(SharpnessColour.Green),
+            new Sharpness(SharpnessColour.Blue),
+            new Sharpness(SharpnessColour.White),
+            new Sharpness(SharpnessColour.Purple)
+        };
+
+        sharpnessesUpdate = new List<Sharpness>() {
             new Sharpness(SharpnessColour.Red),
             new Sharpness(SharpnessColour.Orange),
             new Sharpness(SharpnessColour.Yellow),
@@ -54,6 +65,8 @@ public enum Rarity {
     Rarity8,
     Rarity9,
     Rarity10,
+    Rarity11,
+    Rarity12,
     RarityX
 }
 
@@ -80,11 +93,12 @@ public enum GemSlot {
     Medium,
     Big,
     MAX,
-    Square,
-    Why
+    GRank,
+    Exotic
 }
 
 public enum ElderSeal {
+    None,
     Low,
     Average,
     High

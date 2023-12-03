@@ -20,12 +20,6 @@ public class StatsPanelView : MonoBehaviour
     private TMP_InputField attackValue;
 
     [SerializeField]
-    private TMP_InputField sharpness;
-
-    [SerializeField]
-    private TMP_InputField sharpnessMax;
-
-    [SerializeField]
     private TMP_InputField affinity;
 
     [SerializeField]
@@ -64,6 +58,9 @@ public class StatsPanelView : MonoBehaviour
     private SharpnessView sharpnessView;
 
     [SerializeField]
+    private SharpnessUpdateView sharpnessUpdateView;
+
+    [SerializeField]
     private SharpnessMaxView sharpnessMaxView;
 
     public void ResetView()
@@ -73,6 +70,7 @@ public class StatsPanelView : MonoBehaviour
         weaponIcon.UpdateRarityColour(0);
         attackValue.SetTextWithoutNotify(string.Empty);
         sharpnessView.ResetView();
+        sharpnessUpdateView.ResetView();
         sharpnessMaxView.ResetView();
         affinity.SetTextWithoutNotify(string.Empty);
 
@@ -93,6 +91,7 @@ public class StatsPanelView : MonoBehaviour
         weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
         attackValue.SetTextWithoutNotify((weapon.weaponStats.attackValue * GameController.instance.GetCurrentRawDamageMultiplier()).ToString());
         sharpnessView.UpdateView(weapon.weaponStats.sharpnesses);
+        sharpnessUpdateView.UpdateView(weapon.weaponStats.sharpnessesUpdate);
         sharpnessMaxView.UpdateView(weapon.weaponStats.sharpnessesMax);
         affinity.SetTextWithoutNotify(weapon.weaponStats.affinity.ToString() + "%");
 

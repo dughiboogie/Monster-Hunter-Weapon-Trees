@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 
-public class SharpnessView : StatEntryView
+public class SharpnessView : MonoBehaviour
 {
     [SerializeField]
     private List<TMP_InputField> sharpnessValues;

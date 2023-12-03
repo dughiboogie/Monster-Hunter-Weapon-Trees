@@ -22,5 +22,6 @@ public enum Element {
     Dragon,
     Poison,
     Sleep,
-    Paralysis
+    Paralysis,
+    Blast
 }

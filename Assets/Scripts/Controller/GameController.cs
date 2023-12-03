@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using TMPro;
 
 /*
  * This class is responsible for taking user's requests and dispatching them to the right owner
@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour {
 
     [SerializeField]
     private DetailsView detailsView;
+
+    [SerializeField]
+    private GameObject unsavedChangesInfoPanel;
 
     private float currentRawDamageMultiplier = 1.0f;
     private float currentElementalDamageMultiplier = 1.0f;
@@ -32,6 +35,15 @@ public class GameController : MonoBehaviour {
 
     #region Game
 
+    public void ResetGame()
+    {
+        GameModel.ResetGame();
+        headerView.ResetView();
+        gameWeaponTreesView.RemoveWeaponTreeViews();
+        detailsView.ResetView();
+        ActivateDetailsView(false);
+    }
+
     public void CreateNewGame()
     {
         GameModel.CreateNewGame();
@@ -39,10 +51,19 @@ public class GameController : MonoBehaviour {
 
     public void LoadGame(string gameName)
     {
+        if(GameModel.GetCurrentGame() != null) {
+            ResetGame();
+        }
+
         GameModel.LoadGame(gameName);
         headerView.UpdateGameNameView(gameName);
 
         InstantiateWeaponTreeViews();
+    }
+
+    public void RefreshGame()
+    {
+        LoadGame(GameModel.GetCurrentGame().gameName);
     }
 
     public void UpdateGameName(string gameName)
@@ -52,8 +73,13 @@ public class GameController : MonoBehaviour {
 
     public void SaveGame()
     {
-        if(!GameModel.SaveGame()) {
-            headerView.ShowSaveErrorMessage();
+        try {
+            if(!GameModel.SaveGame()) {
+                headerView.ShowSaveErrorMessage();
+            }
+        }
+        catch(Exception e) {
+            throw e;
         }
     }
 
@@ -159,7 +185,7 @@ public class GameController : MonoBehaviour {
         }
         GameModel.SelectWeapon(weaponID, weaponCoordinates);
         gameWeaponTreesView.SelectWeapon(GameModel.GetSelectedWeapon());
-        detailsView.gameObject.SetActive(true);
+        ActivateDetailsView(true);
         detailsView.UpdateView(GameModel.GetSelectedWeapon());
 
         KeyboardInputManager.instance.UpdateConsoleHints(HintContext.WeaponSelected);
@@ -182,13 +208,21 @@ public class GameController : MonoBehaviour {
             GameModel.DeleteSelectedWeapon();
 
             InstantiateWeaponTreeViews();
-            detailsView.gameObject.SetActive(false);
+            ActivateDetailsView(false);
         }
+
+        ConsolePrinter.instance.ResetConsoleView();
     }
 
     public void UpdateHasWeapon(bool active)
     {
         GameModel.UpdateHasWeapon(active);
+        gameWeaponTreesView.UpdateSelectedWeaponOwnership(GameModel.GetSelectedWeapon());
+    }
+
+    private void ActivateDetailsView(bool active)
+    {
+        detailsView.gameObject.SetActive(active);
     }
 
     #endregion
@@ -269,6 +303,14 @@ public class GameController : MonoBehaviour {
             sharpnessValue = "0";
         }
         GameModel.UpdateSharpnessValue(sharpnessColour, uint.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public void UpdateSharpnessUpdateValue(SharpnessColour sharpnessColour, string sharpnessValue)
+    {
+        if(sharpnessValue == string.Empty) {
+            sharpnessValue = "0";
+        }
+        GameModel.UpdateSharpnessUpdateValue(sharpnessColour, uint.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
     public void UpdateSharpnessMaxValue(SharpnessColour sharpnessColour, string sharpnessMaxValue)
@@ -353,6 +395,47 @@ public class GameController : MonoBehaviour {
     {
         GameModel.UpdateSelectedWeaponImage(imagePath);
         detailsView.UpdateView(GameModel.GetSelectedWeapon());
+    }
+
+    #endregion
+
+    #region ScreenUtils
+
+    public void OnHomeButtonPressed()
+    {
+        if(GameModel.IsDirty) {
+            unsavedChangesInfoPanel.SetActive(true);
+        }
+        else {
+            ResetGame();
+            ScreensManager.instance.GoToMainMenu();
+        }
+    }
+
+    public void GoToHomeNoSave()
+    {
+        unsavedChangesInfoPanel.SetActive(false);
+        ResetGame();
+        ScreensManager.instance.GoToMainMenu();
+    }
+
+    public void GoToHomeSave()
+    {
+        unsavedChangesInfoPanel.SetActive(false);
+
+        try {
+            SaveGame();
+            ResetGame();
+            ScreensManager.instance.GoToMainMenu();
+        }
+        catch(Exception e) {
+            throw e;
+        }
+    }
+
+    public void GoToHomeCancel()
+    {
+        unsavedChangesInfoPanel.SetActive(false);
     }
 
     #endregion

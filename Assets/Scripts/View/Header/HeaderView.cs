@@ -23,6 +23,14 @@ public class HeaderView : MonoBehaviour
     [SerializeField]
     private GameObject errorMessagePanel;
 
+    public void ResetView()
+    {
+        gameName.text = string.Empty;
+        rawDamageMultToggle.SetIsOnWithoutNotify(false);
+        rawDamageMultValue.SetTextWithoutNotify("x 1.0");
+        elementDamageMultToggle.SetIsOnWithoutNotify(false);
+        elementDamageMultValue.SetTextWithoutNotify("x 1.0");
+    }
 
     public void UpdateGameNameView(string gameName)
     {
