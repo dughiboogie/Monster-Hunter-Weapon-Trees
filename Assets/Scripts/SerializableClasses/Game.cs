@@ -5,6 +5,8 @@ public class Game {
     public string gameName;
     public float rawDamageMultiplier;
     public float elementalDamageMultiplier;
+    public bool rawDamageMultiplierActive;
+    public bool elementalDamageMultiplierActive;
     public List<WeaponTree> weaponTrees;
 
     public Game()

@@ -75,6 +75,50 @@ public static class GameModel
         IsDirty = true;
     }
 
+    public static void ActivateRawDamageMultiplier(bool active)
+    {
+        if(active) {
+            foreach(var weaponTree in currentGame.weaponTrees) {
+                foreach(var weapon in weaponTree.weapons) {
+                    weapon.weaponStats.attackValue = weapon.weaponStats.attackValue * currentGame.rawDamageMultiplier;
+                }
+            }
+        }
+        else {
+            foreach(var weaponTree in currentGame.weaponTrees) {
+                foreach(var weapon in weaponTree.weapons) {
+                    weapon.weaponStats.attackValue = weapon.weaponStats.attackValue / currentGame.rawDamageMultiplier;
+                }
+            }
+        }
+        currentGame.rawDamageMultiplierActive = active;
+        IsDirty = true;
+    }
+
+    public static void ActivateElementalDamageMultiplier(bool active)
+    {
+        if(active) {
+            foreach(var weaponTree in currentGame.weaponTrees) {
+                foreach(var weapon in weaponTree.weapons) {
+                    foreach(var element in weapon.weaponStats.weaponElements) {
+                        element.elementValue = Mathf.Round(element.elementValue * currentGame.elementalDamageMultiplier);
+                    }
+                }
+            }
+        }
+        else {
+            foreach(var weaponTree in currentGame.weaponTrees) {
+                foreach(var weapon in weaponTree.weapons) {
+                    foreach(var element in weapon.weaponStats.weaponElements) {
+                        element.elementValue = Mathf.Round(element.elementValue / currentGame.elementalDamageMultiplier);
+                    }
+                }
+            }
+        }
+        currentGame.elementalDamageMultiplierActive = active;
+        IsDirty = true;
+    }
+
     #endregion
 
     #region WeaponTree
@@ -321,7 +365,7 @@ public static class GameModel
         IsDirty = true;
     }
 
-    public static void UpdateAttackValue(uint attackValue)
+    public static void UpdateAttackValue(float attackValue)
     {
         selectedWeapon.weaponStats.attackValue = attackValue;
         IsDirty = true;
@@ -423,7 +467,7 @@ public static class GameModel
         IsDirty = true;
     }
 
-    public static void UpdateElementValue(uint elementValue, int elementIndex)
+    public static void UpdateElementValue(float elementValue, int elementIndex)
     {
         if(selectedWeapon.weaponStats.weaponElements.Count < elementIndex) {
             Debug.LogWarning($"Trying to update element value at index {elementIndex} but selected weapon has too little elements!");

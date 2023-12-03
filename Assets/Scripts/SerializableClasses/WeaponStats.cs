@@ -3,7 +3,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class WeaponStats {
     public Rarity rarity;
-    public uint attackValue;
+    public float attackValue;
     public List<Sharpness> sharpnesses;
     public List<Sharpness> sharpnessesUpdate;
     public List<Sharpness> sharpnessesMax;

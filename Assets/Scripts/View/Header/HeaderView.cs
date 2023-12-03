@@ -32,7 +32,16 @@ public class HeaderView : MonoBehaviour
         elementDamageMultValue.SetTextWithoutNotify("x 1.0");
     }
 
-    public void UpdateGameNameView(string gameName)
+    public void UpdateView(Game game)
+    {
+        UpdateGameNameView(game.gameName);
+        rawDamageMultToggle.SetIsOnWithoutNotify(game.rawDamageMultiplierActive);
+        rawDamageMultValue.SetTextWithoutNotify("x " + game.rawDamageMultiplier.ToString());
+        elementDamageMultToggle.SetIsOnWithoutNotify(game.elementalDamageMultiplierActive);
+        elementDamageMultValue.SetTextWithoutNotify("x " + game.elementalDamageMultiplier.ToString());
+    }
+
+    private void UpdateGameNameView(string gameName)
     {
         this.gameName.text = gameName;
     }

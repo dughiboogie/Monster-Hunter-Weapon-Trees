@@ -2,10 +2,10 @@
 public class WeaponElement
 {
     public Element elementType;
-    public uint elementValue;
+    public float elementValue;
     public bool hiddenElement;
 
-    public WeaponElement(Element elementType = Element.None, uint elementValue = 0)
+    public WeaponElement(Element elementType = Element.None, float elementValue = 0)
     {
         this.elementType = elementType;
         this.elementValue = elementValue;

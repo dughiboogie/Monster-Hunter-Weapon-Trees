@@ -19,7 +19,6 @@ public class GameController : MonoBehaviour {
     [SerializeField]
     private GameObject unsavedChangesInfoPanel;
 
-    private float currentRawDamageMultiplier = 1.0f;
     private float currentElementalDamageMultiplier = 1.0f;
 
     #region Singleton
@@ -56,7 +55,7 @@ public class GameController : MonoBehaviour {
         }
 
         GameModel.LoadGame(gameName);
-        headerView.UpdateGameNameView(gameName);
+        headerView.UpdateView(GameModel.GetCurrentGame());
 
         InstantiateWeaponTreeViews();
     }
@@ -89,12 +88,8 @@ public class GameController : MonoBehaviour {
 
     public void ToggleRawDamageMultiplier(bool active)
     {
-        if(active) {
-            currentRawDamageMultiplier = GameModel.GetCurrentGame().rawDamageMultiplier;
-        }
-        else {
-            currentRawDamageMultiplier = 1.0f;
-        }
+        GameModel.ActivateRawDamageMultiplier(active);
+
         if(GameModel.GetSelectedWeapon() != null) {
             detailsView.UpdateView(GameModel.GetSelectedWeapon());
         }
@@ -107,12 +102,8 @@ public class GameController : MonoBehaviour {
 
     public void ToggleElementalDamageMultiplier(bool active)
     {
-        if(active) {
-            currentElementalDamageMultiplier = GameModel.GetCurrentGame().elementalDamageMultiplier;
-        }
-        else {
-            currentElementalDamageMultiplier = 1.0f;
-        }
+        GameModel.ActivateElementalDamageMultiplier(active);
+
         if(GameModel.GetSelectedWeapon() != null) {
             detailsView.UpdateView(GameModel.GetSelectedWeapon());
         }
@@ -121,11 +112,6 @@ public class GameController : MonoBehaviour {
     public void UpdateElementalDamageMultiplierValue(string value)
     {
         GameModel.UpdateElementalDamageMultiplierValue(float.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
-    }
-
-    public float GetCurrentRawDamageMultiplier()
-    {
-        return currentRawDamageMultiplier;
     }
 
     public float GetCurrentElementalDamageMultiplier()
@@ -294,7 +280,7 @@ public class GameController : MonoBehaviour {
         if(attackValue == string.Empty) {
             attackValue = "0";
         }
-        GameModel.UpdateAttackValue(uint.Parse(attackValue, System.Globalization.CultureInfo.InvariantCulture));
+        GameModel.UpdateAttackValue(float.Parse(attackValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
     public void UpdateSharpnessValue(SharpnessColour sharpnessColour, string sharpnessValue) 
@@ -345,7 +331,7 @@ public class GameController : MonoBehaviour {
         if(elementValue == string.Empty) {
             elementValue = "0";
         }
-        GameModel.UpdateElementValue(uint.Parse(elementValue, System.Globalization.CultureInfo.InvariantCulture), elementIndex);
+        GameModel.UpdateElementValue(float.Parse(elementValue, System.Globalization.CultureInfo.InvariantCulture), elementIndex);
     }
 
     public void HideElement(bool hidden, int elementIndex)

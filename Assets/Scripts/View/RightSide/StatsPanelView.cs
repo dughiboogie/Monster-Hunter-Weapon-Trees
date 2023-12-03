@@ -89,7 +89,7 @@ public class StatsPanelView : MonoBehaviour
         hasWeaponButton.SetIsOnWithoutNotify(weapon.hasWeapon);
         rarityValue.SetValueWithoutNotify((int)weapon.weaponStats.rarity);
         weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
-        attackValue.SetTextWithoutNotify((weapon.weaponStats.attackValue * GameController.instance.GetCurrentRawDamageMultiplier()).ToString());
+        attackValue.SetTextWithoutNotify((weapon.weaponStats.attackValue).ToString());
         sharpnessView.UpdateView(weapon.weaponStats.sharpnesses);
         sharpnessUpdateView.UpdateView(weapon.weaponStats.sharpnessesUpdate);
         sharpnessMaxView.UpdateView(weapon.weaponStats.sharpnessesMax);
