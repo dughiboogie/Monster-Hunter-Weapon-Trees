@@ -84,13 +84,12 @@ public class WeaponIconView : MonoBehaviour
         }
     }
 
-    public void UpdateElementIcon(int elementIndex, Element element)
+    public void UpdateElementIcon(int elementIndex, Element element, bool hiddenElement)
     {
         if(elementIndex < 3) {
-            // Set Sprite based on Element
-
             Texture2D texture = new Texture2D(256, 256);
 
+            // Set Sprite based on Element
             switch(element) {
                 case Element.None:
                     texture = null;
@@ -132,6 +131,13 @@ public class WeaponIconView : MonoBehaviour
 
             elementIcons[elementIndex].gameObject.SetActive(texture != null);
             elementIcons[elementIndex].texture = texture;
+
+            if(hiddenElement) {
+                elementIcons[elementIndex].color = Color.gray;
+            }
+            else {
+                elementIcons[elementIndex].color = Color.white;
+            }
         } 
     }
 

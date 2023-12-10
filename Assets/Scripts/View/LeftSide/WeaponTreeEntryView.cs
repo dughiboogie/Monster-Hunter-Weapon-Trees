@@ -80,7 +80,7 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
         int weaponElementCount = weapon.weaponStats.weaponElements.Count < 3 ? weapon.weaponStats.weaponElements.Count : 3;
 
         for(int i = 0; i < weaponElementCount; i++) {
-            weaponIcon.UpdateElementIcon(i, weapon.weaponStats.weaponElements[i].elementType);
+            weaponIcon.UpdateElementIcon(i, weapon.weaponStats.weaponElements[i].elementType, weapon.weaponStats.weaponElements[i].hiddenElement);
         }
     }
 
