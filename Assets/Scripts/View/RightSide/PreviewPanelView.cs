@@ -8,6 +8,9 @@ public class PreviewPanelView : MonoBehaviour
     private TMP_InputField weaponName;
 
     [SerializeField]
+    private RectTransform weaponImageParent;
+
+    [SerializeField]
     private RawImage weaponImage;
 
     [SerializeField]
@@ -83,7 +86,7 @@ public class PreviewPanelView : MonoBehaviour
     private void ActivateUploadImageIcon(bool activate)
     {
         uploadImageIcon.gameObject.SetActive(activate);
-        weaponImage.gameObject.SetActive(!activate);
+        weaponImageParent.gameObject.SetActive(!activate);
     }
 
     private void UpdateWeaponImageTexture(string imagePath)
@@ -91,6 +94,32 @@ public class PreviewPanelView : MonoBehaviour
         Texture2D texture = new Texture2D(256, 256);
         ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(imagePath));
         weaponImage.texture = texture;
+
+        //// RESIZE IMAGE
+
+        float w = 0, h = 0, padding = 0;
+        var imageTransform = weaponImage.GetComponent<RectTransform>();
+
+        // check if there is something to do
+        // if(!parent) { return imageTransform.sizeDelta; } //if we don't have a parent, just return our current width;
+        padding = 1 - padding;
+        float ratio = weaponImage.texture.width / (float)weaponImage.texture.height;
+        var bounds = new Rect(0, 0, weaponImageParent.rect.width, weaponImageParent.rect.height);
+        if(Mathf.RoundToInt(imageTransform.eulerAngles.z) % 180 == 90) {
+            //Invert the bounds if the image is rotated
+            bounds.size = new Vector2(bounds.height, bounds.width);
+        }
+        //Size by height first
+        h = bounds.height * padding;
+        w = h * ratio;
+        if(w > bounds.width * padding) { //If it doesn't fit, fallback to width;
+            w = bounds.width * padding;
+            h = w / ratio;
+        }
+        
+        imageTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
+        imageTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+        // return imageTransform.sizeDelta;
     }
 
     #endregion

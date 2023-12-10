@@ -100,6 +100,11 @@ public class WeaponTreeView : MonoBehaviour
         weaponTreeEntryViews[weapon.weaponCoordinates.x].UpdateWeaponOwnershipView(weapon.hasWeapon);
     }
 
+    public void UpdateWeaponElementIcon(Weapon weapon)
+    {
+        weaponTreeEntryViews[weapon.weaponCoordinates.x].UpdateWeaponElementIcons(weapon);
+    }
+
     public void DeleteWeapon(Weapon weapon)
     {
         weaponTreeEntryViews[weapon.weaponCoordinates.x].DeleteWeapon();

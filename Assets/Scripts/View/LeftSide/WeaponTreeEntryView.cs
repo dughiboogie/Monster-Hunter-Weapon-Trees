@@ -52,6 +52,7 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
         }
 
         UpdateWeaponRarity(weapon);
+        UpdateWeaponElementIcons(weapon);
         ActivateWeaponOwnedBackground(weapon.hasWeapon);
 
         // Do other VIEW POPULATION (e.g. element, etc)
@@ -72,6 +73,15 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
     public void UpdateWeaponRarity(Weapon weapon)
     {
         weaponIcon.UpdateRarityColour(weapon.weaponStats.rarity);
+    }
+
+    public void UpdateWeaponElementIcons(Weapon weapon)
+    {
+        int weaponElementCount = weapon.weaponStats.weaponElements.Count < 3 ? weapon.weaponStats.weaponElements.Count : 3;
+
+        for(int i = 0; i < weaponElementCount; i++) {
+            weaponIcon.UpdateElementIcon(i, weapon.weaponStats.weaponElements[i].elementType);
+        }
     }
 
     public void UpdateWeaponOwnershipView(bool owns)

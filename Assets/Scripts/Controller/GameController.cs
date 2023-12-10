@@ -324,6 +324,7 @@ public class GameController : MonoBehaviour {
     public void UpdateElementType(string elementType, int elementIndex)
     {
         GameModel.UpdateElementType(elementType, elementIndex);
+        gameWeaponTreesView.UpdateSelectedWeaponElementIcon(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateElementValue(string elementValue, int elementIndex)

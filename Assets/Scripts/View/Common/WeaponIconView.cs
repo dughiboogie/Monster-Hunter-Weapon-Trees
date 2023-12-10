@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,9 @@ public class WeaponIconView : MonoBehaviour
 {
     [SerializeField]
     private Image weaponIcon;
+
+    [SerializeField]
+    public List<RawImage> elementIcons;
 
     private Color32 rarityColor1 = new Color32(232, 232, 232, 100);
     private Color32 rarityColor2 = new Color32(176,148, 248, 100);
@@ -19,6 +23,18 @@ public class WeaponIconView : MonoBehaviour
     private Color32 rarityColor11 = new Color32(255, 255, 0, 100);
     private Color32 rarityColor12 = new Color32(255, 67, 93, 100);
     private Color32 rarityColorX = new Color32(128, 0, 248, 100);
+
+    private string noneElementPath = string.Empty;
+    private string rawElementPath = "";
+    private string fireElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-fire-damage.png";
+    private string waterElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-water-elemental-damage.png";
+    private string thunderElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-thunder-damage.png";
+    private string iceElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-ice-damage.png";
+    private string dragonElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-dragon-damage.png";
+    private string poisonElementPath = "";
+    private string sleepElementPath = "";
+    private string paralysisElementPath = "";
+    private string blastElementPath = "";
 
     public void UpdateRarityColour(Rarity rarity)
     {
@@ -66,6 +82,57 @@ public class WeaponIconView : MonoBehaviour
                 Debug.LogError($"Trying to update rarity colour to an invalid value: {rarity}");
                 break;
         }
+    }
+
+    public void UpdateElementIcon(int elementIndex, Element element)
+    {
+        if(elementIndex < 3) {
+            // Set Sprite based on Element
+
+            Texture2D texture = new Texture2D(256, 256);
+
+            switch(element) {
+                case Element.None:
+                    texture = null;
+                    break;
+                case Element.Raw:
+                    texture = null;
+                    break;
+                case Element.Fire:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(fireElementPath));
+                    break;
+                case Element.Water:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(waterElementPath));
+                    break;
+                case Element.Thunder:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(thunderElementPath));
+                    break;
+                case Element.Ice:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(iceElementPath));
+                    break;
+                case Element.Dragon:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(dragonElementPath));
+                    break;
+                case Element.Poison:
+                    texture = null;
+                    break;
+                case Element.Sleep:
+                    texture = null;
+                    break;
+                case Element.Paralysis:
+                    texture = null;
+                    break;
+                case Element.Blast:
+                    texture = null;
+                    break;
+                default:
+                    Debug.LogError($"Invalid weapon element icon: {element}");
+                    break;
+            }
+
+            elementIcons[elementIndex].gameObject.SetActive(texture != null);
+            elementIcons[elementIndex].texture = texture;
+        } 
     }
 
 }
