@@ -3,23 +3,54 @@ using System.Collections.Generic;
 [System.Serializable]
 public class WeaponStats {
     public Rarity rarity;
-    public uint attackValue;
-    public float sharpness;     // Change to ENUM?
-    public float sharpnessMax;  // Change to ENUM?
+    public float attackValue;
+    public List<Sharpness> sharpnesses;
+    public List<Sharpness> sharpnessesUpdate;
+    public List<Sharpness> sharpnessesMax;
     public float affinity;
-    public Dictionary<Element, int> elements;
-    public bool hiddenElement;
-    public List<Slot> slots;
+    public List<WeaponElement> weaponElements;
+    public List<GemSlot> gemSlots;
     public uint defenseValue;
     public ShellingType shellingType;
     public ShellingLevel shellingLevel;
     public ElderSeal elderseal;
-    public Skill skill;
+    public string skill;
 
     public WeaponStats()
     {
-        elements = new Dictionary<Element, int>();
-        slots = new List<Slot>();
+        sharpnesses = new List<Sharpness>() {
+            new Sharpness(SharpnessColour.Red),
+            new Sharpness(SharpnessColour.Orange),
+            new Sharpness(SharpnessColour.Yellow),
+            new Sharpness(SharpnessColour.Green),
+            new Sharpness(SharpnessColour.Blue),
+            new Sharpness(SharpnessColour.White),
+            new Sharpness(SharpnessColour.Purple)
+        };
+
+        sharpnessesUpdate = new List<Sharpness>() {
+            new Sharpness(SharpnessColour.Red),
+            new Sharpness(SharpnessColour.Orange),
+            new Sharpness(SharpnessColour.Yellow),
+            new Sharpness(SharpnessColour.Green),
+            new Sharpness(SharpnessColour.Blue),
+            new Sharpness(SharpnessColour.White),
+            new Sharpness(SharpnessColour.Purple)
+        };
+
+        sharpnessesMax = new List<Sharpness>() {
+            new Sharpness(SharpnessColour.Red),
+            new Sharpness(SharpnessColour.Orange),
+            new Sharpness(SharpnessColour.Yellow),
+            new Sharpness(SharpnessColour.Green),
+            new Sharpness(SharpnessColour.Blue),
+            new Sharpness(SharpnessColour.White),
+            new Sharpness(SharpnessColour.Purple)
+        };
+
+        weaponElements = new List<WeaponElement>();
+        weaponElements.Add(new WeaponElement());
+        gemSlots = new List<GemSlot>() { GemSlot.None, GemSlot.None, GemSlot.None };
     }
 }
 
@@ -34,20 +65,9 @@ public enum Rarity {
     Rarity8,
     Rarity9,
     Rarity10,
+    Rarity11,
+    Rarity12,
     RarityX
-}
-
-public enum Element {
-    None,
-    Raw,
-    Fire,
-    Water,
-    Thunder,
-    Ice,
-    Dragon,
-    Poison,
-    Sleep,
-    Paralysis
 }
 
 public enum ShellingLevel {
@@ -66,23 +86,19 @@ public enum ShellingType {
     Long
 }
 
-public enum Slot {
+public enum GemSlot {
     None,
     Simple,
     Small,
     Medium,
     Big,
     MAX,
-    Square,
-    Why
-}
-
-public enum Skill {
-    None,
-    TestSkill
+    GRank,
+    Exotic
 }
 
 public enum ElderSeal {
+    None,
     Low,
     Average,
     High

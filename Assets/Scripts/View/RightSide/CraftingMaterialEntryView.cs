@@ -13,10 +13,17 @@ public class CraftingMaterialEntryView : MonoBehaviour {
     [SerializeField]
     private TMP_InputField materialAmount;
 
+    [SerializeField]
+    private Image rowBackground;
+
+    private UniqueID materialID;
+
     public void Initialise(CraftingMaterial material)
     {
         materialName.text = material.materialName;
         FormatMaterialAmount(material.materialAmount.ToString());
+        materialID = material.materialID;
+        SetMaterialRowBackgroundColor();
     }
 
     private void FormatMaterialAmount(string materialAmount)
@@ -24,16 +31,31 @@ public class CraftingMaterialEntryView : MonoBehaviour {
         this.materialAmount.text = "X " + materialAmount;
     }
 
+    private void SetMaterialRowBackgroundColor()
+    {
+        if(transform.GetSiblingIndex() % 2 != 0) {
+            rowBackground.CrossFadeAlpha(5, .1f, true);
+        }
+        else {
+            rowBackground.CrossFadeAlpha(0, .1f, true);
+        }
+    }
+
     #region Events
 
     public void OnMaterialNameChange(string newName)
     {
-        GameController.instance.UpdateMaterialName(newName, transform.GetSiblingIndex());
+        GameController.instance.UpdateMaterialName(newName, materialID);
     }
 
     public void OnMaterialAmountChange(string newAmount)
     {
-        GameController.instance.UpdateMaterialAmount(newAmount, transform.GetSiblingIndex());
+        GameController.instance.UpdateMaterialAmount(newAmount, materialID);
+    }
+
+    public void OnMaterialDelete()
+    {
+        GameController.instance.RemoveMaterial(materialID);
     }
 
     #endregion

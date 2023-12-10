@@ -19,6 +19,7 @@ public class Weapon
         
         weaponID = new UniqueID();
         weaponID.InitialiseUniqueID();
+        imagePath = string.Empty;
         craftingCosts = new CraftingCosts();
         weaponStats = new WeaponStats();
         previousWeaponEvolutionID = new UniqueID();

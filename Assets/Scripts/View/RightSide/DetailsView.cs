@@ -16,7 +16,7 @@ public class DetailsView : MonoBehaviour
         statsPanelView.UpdateView(weapon);
     }
 
-    private void ResetView()
+    public void ResetView()
     {
         previewPanelView.ResetView();
         statsPanelView.ResetView();

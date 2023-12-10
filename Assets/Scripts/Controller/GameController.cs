@@ -1,21 +1,25 @@
+using System;
 using UnityEngine;
-using TMPro;
 
 /*
  * This class is responsible for taking user's requests and dispatching them to the right owner
  */
-public class GameController : MonoBehaviour
-{
+public class GameController : MonoBehaviour {
     public static GameController instance;
 
     [SerializeField]
-    private TMP_InputField windowName;
+    private HeaderView headerView;
 
     [SerializeField]
     private GameWeaponTreesView gameWeaponTreesView;
 
     [SerializeField]
     private DetailsView detailsView;
+
+    [SerializeField]
+    private GameObject unsavedChangesInfoPanel;
+
+    private float currentElementalDamageMultiplier = 1.0f;
 
     #region Singleton
     private void Awake()
@@ -30,35 +34,89 @@ public class GameController : MonoBehaviour
 
     #region Game
 
-    public void CreateNewGame(string gameName = "", float rawDamageMultiplier = 1.0f, float elementalDamageMultiplier = 1.0f)
+    public void ResetGame()
     {
-        GameModel.CreateNewGame(gameName, rawDamageMultiplier, elementalDamageMultiplier);
+        GameModel.ResetGame();
+        headerView.ResetView();
+        gameWeaponTreesView.RemoveWeaponTreeViews();
+        detailsView.ResetView();
+        ActivateDetailsView(false);
+    }
+
+    public void CreateNewGame()
+    {
+        GameModel.CreateNewGame();
     }
 
     public void LoadGame(string gameName)
     {
-        GameModel.LoadGame(gameName);
-        windowName.text = gameName;
-
-        gameWeaponTreesView.RemoveAllWeaponTrees();
-        foreach(WeaponTree weaponTree in GameModel.GetCurrentGame().weaponTrees) {
-            gameWeaponTreesView.AddWeaponTreeView(weaponTree);
+        if(GameModel.GetCurrentGame() != null) {
+            ResetGame();
         }
+
+        GameModel.LoadGame(gameName);
+        headerView.UpdateView(GameModel.GetCurrentGame());
+
+        InstantiateWeaponTreeViews();
     }
 
-    // TODO Create new class HeaderView and move this method there?
-    public void UpdateGameName(string newGameName)
+    public void RefreshGame()
     {
-        if(GameModel.GetCurrentGame() == null) {
-            CreateNewGame();
-        }
+        LoadGame(GameModel.GetCurrentGame().gameName);
+    }
 
-        GameModel.UpdateGameName(newGameName);
+    public void UpdateGameName(string gameName)
+    {
+        GameModel.UpdateGameName(gameName);
     }
 
     public void SaveGame()
     {
-        GameModel.SaveGame();
+        try {
+            if(!GameModel.SaveGame()) {
+                headerView.ShowSaveErrorMessage();
+            }
+        }
+        catch(Exception e) {
+            throw e;
+        }
+    }
+
+    #endregion
+
+    #region DamageMultipliers
+
+    public void ToggleRawDamageMultiplier(bool active)
+    {
+        GameModel.ActivateRawDamageMultiplier(active);
+
+        if(GameModel.GetSelectedWeapon() != null) {
+            detailsView.UpdateView(GameModel.GetSelectedWeapon());
+        }
+    }
+
+    public void UpdateRawDamageMultiplierValue(string value)
+    {
+        GameModel.UpdateRawDamageMultiplierValue(float.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public void ToggleElementalDamageMultiplier(bool active)
+    {
+        GameModel.ActivateElementalDamageMultiplier(active);
+
+        if(GameModel.GetSelectedWeapon() != null) {
+            detailsView.UpdateView(GameModel.GetSelectedWeapon());
+        }
+    }
+
+    public void UpdateElementalDamageMultiplierValue(string value)
+    {
+        GameModel.UpdateElementalDamageMultiplierValue(float.Parse(value, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public float GetCurrentElementalDamageMultiplier()
+    {
+        return currentElementalDamageMultiplier;
     }
 
     #endregion
@@ -67,10 +125,6 @@ public class GameController : MonoBehaviour
 
     public void AddWeaponTree()
     {
-        if(GameModel.GetCurrentGame() == null) {
-            CreateNewGame();
-        }
-
         gameWeaponTreesView.AddWeaponTreeView(GameModel.AddWeaponTree());
     }
 
@@ -82,6 +136,14 @@ public class GameController : MonoBehaviour
     public void UpdateWeaponTreeName(UniqueID weaponTreeID, string weaponTreeName)
     {
         GameModel.UpdateWeaponTreeName(weaponTreeID, weaponTreeName);
+    }
+
+    private void InstantiateWeaponTreeViews()
+    {
+        gameWeaponTreesView.RemoveWeaponTreeViews();
+        foreach(WeaponTree weaponTree in GameModel.GetCurrentGame().weaponTrees) {
+            gameWeaponTreesView.AddWeaponTreeView(weaponTree);
+        }
     }
 
     #endregion
@@ -109,7 +171,7 @@ public class GameController : MonoBehaviour
         }
         GameModel.SelectWeapon(weaponID, weaponCoordinates);
         gameWeaponTreesView.SelectWeapon(GameModel.GetSelectedWeapon());
-        detailsView.gameObject.SetActive(true);
+        ActivateDetailsView(true);
         detailsView.UpdateView(GameModel.GetSelectedWeapon());
 
         KeyboardInputManager.instance.UpdateConsoleHints(HintContext.WeaponSelected);
@@ -124,6 +186,29 @@ public class GameController : MonoBehaviour
     public void UpdateWeaponCost(string weaponCostText)
     {
         GameModel.UpdateWeaponCost(uint.Parse(weaponCostText));
+    }
+
+    public void DeleteSelectedWeapon()
+    {
+        if(GameModel.GetSelectedWeapon() != null) {
+            GameModel.DeleteSelectedWeapon();
+
+            InstantiateWeaponTreeViews();
+            ActivateDetailsView(false);
+        }
+
+        ConsolePrinter.instance.ResetConsoleView();
+    }
+
+    public void UpdateHasWeapon(bool active)
+    {
+        GameModel.UpdateHasWeapon(active);
+        gameWeaponTreesView.UpdateSelectedWeaponOwnership(GameModel.GetSelectedWeapon());
+    }
+
+    private void ActivateDetailsView(bool active)
+    {
+        detailsView.gameObject.SetActive(active);
     }
 
     #endregion
@@ -148,7 +233,7 @@ public class GameController : MonoBehaviour
     public void DeleteWeaponEvolution()
     {
         if(GameModel.GetSelectedWeapon() != null) {
-            GameModel.DeleteWeaponEvolution();
+            GameModel.DeleteWeaponPreviousEvolution();
             gameWeaponTreesView.CancelEvolutionLine(GameModel.GetSelectedWeapon());
         }
     }
@@ -163,14 +248,20 @@ public class GameController : MonoBehaviour
         detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
-    public void UpdateMaterialName(string materialName, int materialIndex)
+    public void UpdateMaterialName(string materialName, UniqueID materialID)
     {
-        GameModel.UpdateMaterialName(materialName, materialIndex);
+        GameModel.UpdateMaterialName(materialName, materialID);
     }
 
-    public void UpdateMaterialAmount(string materialAmount, int materialIndex)
+    public void UpdateMaterialAmount(string materialAmount, UniqueID materialID)
     {
-        GameModel.UpdateMaterialAmount(uint.Parse(materialAmount), materialIndex);
+        GameModel.UpdateMaterialAmount(uint.Parse(materialAmount), materialID);
+    }
+
+    public void RemoveMaterial(UniqueID materialID)
+    {
+        GameModel.RemoveMaterial(materialID);
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
     #endregion
@@ -180,47 +271,157 @@ public class GameController : MonoBehaviour
     public void UpdateRarity(string rarity)
     {
         GameModel.UpdateRarity(rarity);
-        
-        // TODO Update view - Change rarity icon BG colour
+        gameWeaponTreesView.UpdateSelectedWeaponRarity(GameModel.GetSelectedWeapon());
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateAttackValue(string attackValue)
     {
-        GameModel.UpdateAttackValue(uint.Parse(attackValue, System.Globalization.CultureInfo.InvariantCulture));
+        if(attackValue == string.Empty) {
+            attackValue = "0";
+        }
+        GameModel.UpdateAttackValue(float.Parse(attackValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
-    public void UpdateSharpnessValue(string sharpnessValue) {
-        GameModel.UpdateSharpnessValue(float.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
-    }
-
-    public void UpdateSharpnessMaxValue(string sharpnessMaxValue)
+    public void UpdateSharpnessValue(SharpnessColour sharpnessColour, string sharpnessValue) 
     {
-        GameModel.UpdateSharpnessMaxValue(float.Parse(sharpnessMaxValue, System.Globalization.CultureInfo.InvariantCulture));
+        if(sharpnessValue == string.Empty) {
+            sharpnessValue = "0";
+        }
+        GameModel.UpdateSharpnessValue(sharpnessColour, uint.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public void UpdateSharpnessUpdateValue(SharpnessColour sharpnessColour, string sharpnessValue)
+    {
+        if(sharpnessValue == string.Empty) {
+            sharpnessValue = "0";
+        }
+        GameModel.UpdateSharpnessUpdateValue(sharpnessColour, uint.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public void UpdateSharpnessMaxValue(SharpnessColour sharpnessColour, string sharpnessMaxValue)
+    {
+        if(sharpnessMaxValue == string.Empty) {
+            sharpnessMaxValue = "0";
+        }
+        GameModel.UpdateSharpnessMaxValue(sharpnessColour, uint.Parse(sharpnessMaxValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
     public void UpdateAffinityValue(string affinityValue)
     {
+        if(affinityValue == string.Empty) {
+            affinityValue = "0";
+        }
         GameModel.UpdateAffinityValue(float.Parse(affinityValue, System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    public void AddElement()
+    {
+        GameModel.AddElement();
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
+    }
+
+    public void UpdateElementType(string elementType, int elementIndex)
+    {
+        GameModel.UpdateElementType(elementType, elementIndex);
+    }
+
+    public void UpdateElementValue(string elementValue, int elementIndex)
+    {
+        if(elementValue == string.Empty) {
+            elementValue = "0";
+        }
+        GameModel.UpdateElementValue(float.Parse(elementValue, System.Globalization.CultureInfo.InvariantCulture), elementIndex);
+    }
+
+    public void HideElement(bool hidden, int elementIndex)
+    {
+        GameModel.HideElement(hidden, elementIndex);
+    }
+
+    public void UpdateGemSlot(string gemSlotName, int gemSlotIndex)
+    {
+        GameModel.UpdateGemSlot(gemSlotName, gemSlotIndex);
     }
 
     public void UpdateDefenseValue(string defenseValue)
     {
+        if(defenseValue == string.Empty) {
+            defenseValue = "0";
+        }
         GameModel.UpdateDefenseValue(uint.Parse(defenseValue, System.Globalization.CultureInfo.InvariantCulture));
     }
 
     public void UpdateShellingType(string shellingType)
     {
-
+        GameModel.UpdateShellingType(shellingType);
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateShellingLevel(string shellingLevel)
     {
-
+        GameModel.UpdateShellingLevel(shellingLevel);
     }
 
     public void UpdateElderseal(string eldersealValue)
     {
+        GameModel.UpdateElderseal(eldersealValue);
+    }
 
+    public void UpdateSkillName(string skillName)
+    {
+        GameModel.UpdateSkillName(skillName);
+    }
+
+    #endregion
+
+    #region Images
+
+    public void UpdateSelectedWeaponImage(string imagePath)
+    {
+        GameModel.UpdateSelectedWeaponImage(imagePath);
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
+    }
+
+    #endregion
+
+    #region ScreenUtils
+
+    public void OnHomeButtonPressed()
+    {
+        if(GameModel.IsDirty) {
+            unsavedChangesInfoPanel.SetActive(true);
+        }
+        else {
+            ResetGame();
+            ScreensManager.instance.GoToMainMenu();
+        }
+    }
+
+    public void GoToHomeNoSave()
+    {
+        unsavedChangesInfoPanel.SetActive(false);
+        ResetGame();
+        ScreensManager.instance.GoToMainMenu();
+    }
+
+    public void GoToHomeSave()
+    {
+        unsavedChangesInfoPanel.SetActive(false);
+
+        try {
+            SaveGame();
+            ResetGame();
+            ScreensManager.instance.GoToMainMenu();
+        }
+        catch(Exception e) {
+            throw e;
+        }
+    }
+
+    public void GoToHomeCancel()
+    {
+        unsavedChangesInfoPanel.SetActive(false);
     }
 
     #endregion

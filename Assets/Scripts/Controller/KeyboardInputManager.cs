@@ -28,6 +28,9 @@ public class KeyboardInputManager : MonoBehaviour
             if(leftAltDown) {
                 GameController.instance.DeleteWeaponEvolution();
             }
+            else {
+                GameController.instance.DeleteSelectedWeapon();
+            }
         }
     }
 

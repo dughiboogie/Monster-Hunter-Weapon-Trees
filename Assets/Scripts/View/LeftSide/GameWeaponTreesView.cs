@@ -16,6 +16,14 @@ public class GameWeaponTreesView : MonoBehaviour
         weaponTreeViews.Add(weaponTreeView);
     }
 
+    public void RemoveWeaponTreeViews()
+    {
+        foreach(WeaponTreeView weaponTreeView in weaponTreeViews) {
+            Destroy(weaponTreeView.gameObject);
+        }
+        weaponTreeViews.Clear();
+    }
+
     public void AddWeapon(Weapon weapon)
     {
         weaponTreeViews[weapon.weaponCoordinates.y].AddWeapon(weapon);
@@ -29,6 +37,21 @@ public class GameWeaponTreesView : MonoBehaviour
     public void DeselectWeapon(Weapon weapon)
     {
         weaponTreeViews[weapon.weaponCoordinates.y].DeselectWeapon(weapon);
+    }
+
+    public void UpdateSelectedWeaponRarity(Weapon weapon)
+    {
+        weaponTreeViews[weapon.weaponCoordinates.y].UpdateWeaponRarity(weapon);
+    }
+
+    public void UpdateSelectedWeaponOwnership(Weapon weapon)
+    {
+        weaponTreeViews[weapon.weaponCoordinates.y].UpdateWeaponOwnership(weapon);
+    }
+
+    public void DeleteWeapon(Weapon weapon)
+    {
+        weaponTreeViews[weapon.weaponCoordinates.y].DeleteWeapon(weapon);
     }
 
     public void DrawEvolutionLine(Vector2Int evolvingWeaponCoordinates, Vector2Int evolvedWeaponCoordinates)
@@ -50,12 +73,4 @@ public class GameWeaponTreesView : MonoBehaviour
     }
     */
 
-    public void RemoveAllWeaponTrees()
-    {
-        foreach(WeaponTreeView weaponTreeView in weaponTreeViews) {
-            Destroy(weaponTreeView.gameObject);
-        }
-
-        weaponTreeViews.Clear();
-    }
 }

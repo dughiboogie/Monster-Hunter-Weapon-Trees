@@ -25,6 +25,11 @@ public class ConsolePrinter : MonoBehaviour
         }
         instance = this;
 
+        ResetConsoleView();
+    }
+
+    public void ResetConsoleView()
+    {
         hint1.text = string.Empty;
         hint2.text = string.Empty;
         xCoordinate.text = string.Empty;

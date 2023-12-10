@@ -22,8 +22,7 @@ public class FileDataManager : MonoBehaviour
         GetGamesDataFromFolder();
     }
 
-    // TODO Call this every time the splash page is opened
-    private List<Game> GetGamesDataFromFolder()
+    public List<Game> GetGamesDataFromFolder()
     {
         gamesData.Clear();
 
@@ -58,5 +57,10 @@ public class FileDataManager : MonoBehaviour
         File.WriteAllText(Path.Combine($"{Application.persistentDataPath}/Data", gameData.gameName + ".json"), stringData);
 
         Debug.Log($"Data for {gameData.gameName} saved succesfully!");
+    }
+
+    public byte[] GetImageDataFromPath(string imagePath)
+    {
+        return File.ReadAllBytes(imagePath);
     }
 }

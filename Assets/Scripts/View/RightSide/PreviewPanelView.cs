@@ -8,7 +8,10 @@ public class PreviewPanelView : MonoBehaviour
     private TMP_InputField weaponName;
 
     [SerializeField]
-    private Image weaponImage;
+    private RawImage weaponImage;
+
+    [SerializeField]
+    private Image uploadImageIcon;
 
     [SerializeField]
     private CraftingMaterialsListView craftingMaterialsView;
@@ -22,7 +25,7 @@ public class PreviewPanelView : MonoBehaviour
     public void ResetView()
     {
         weaponName.text = string.Empty;
-        // Reset weapon image
+        ActivateUploadImageIcon(true);
         craftingMaterialsView.RemoveAllCraftingMaterials();
         FormatCraftingCost(string.Empty);
         ActivateAddMaterialButton(false);
@@ -32,7 +35,10 @@ public class PreviewPanelView : MonoBehaviour
     {
         weaponName.text = weapon.name;
 
-        // Load weapon image
+        if(weapon.imagePath != string.Empty) {
+            ActivateUploadImageIcon(false);
+            UpdateWeaponImageTexture(weapon.imagePath);
+        }
 
         if(weapon.craftingCosts == null) {
             Debug.LogWarning($"This should not happen! CraftingCosts of weapon {weapon.weaponID} is null.");
@@ -62,6 +68,8 @@ public class PreviewPanelView : MonoBehaviour
 
     #endregion
 
+    #region ContextualUtils
+
     private void FormatCraftingCost(string craftingCost)
     {
         requiredCost.text = craftingCost + " z";
@@ -71,4 +79,20 @@ public class PreviewPanelView : MonoBehaviour
     {
         AddMaterialButton.interactable = activate;
     }
+
+    private void ActivateUploadImageIcon(bool activate)
+    {
+        uploadImageIcon.gameObject.SetActive(activate);
+        weaponImage.gameObject.SetActive(!activate);
+    }
+
+    private void UpdateWeaponImageTexture(string imagePath)
+    {
+        Texture2D texture = new Texture2D(256, 256);
+        ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(imagePath));
+        weaponImage.texture = texture;
+    }
+
+    #endregion
+
 }
