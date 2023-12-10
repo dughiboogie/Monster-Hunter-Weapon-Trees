@@ -47,7 +47,7 @@ public class StatsPanelView : MonoBehaviour
     [SerializeField]
     private List<ElementEntryView> elementEntryViews;
 
-    private const int elementViewStartingSiblingIndex = 5;
+    private const int elementViewStartingSiblingIndex = 4;
 
     [Header("Gem slots")]
     [SerializeField]
