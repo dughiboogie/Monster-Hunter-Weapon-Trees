@@ -1,6 +1,7 @@
 using UnityEngine;
 using SimpleFileBrowser;
 using System.Collections;
+using System.IO;
 
 public class ImageLoader : MonoBehaviour {
 
@@ -29,9 +30,9 @@ public class ImageLoader : MonoBehaviour {
 			// Debug.Log(FileBrowser.Result[0]);
 				
 			// Or, copy the first file to persistentDataPath
-            UnityEngine.Windows.Directory.CreateDirectory($"{Application.persistentDataPath}/Images");
+            Directory.CreateDirectory($"{Application.persistentDataPath}/Images");
 			
-			string destinationPath = System.IO.Path.Combine(Application.persistentDataPath, "Images", FileBrowserHelpers.GetFilename(FileBrowser.Result[0]));
+			string destinationPath = Path.Combine(Application.persistentDataPath, "Images", FileBrowserHelpers.GetFilename(FileBrowser.Result[0]));
 			FileBrowserHelpers.CopyFile(FileBrowser.Result[0], destinationPath);
             GameController.instance.UpdateSelectedWeaponImage(destinationPath);
 
