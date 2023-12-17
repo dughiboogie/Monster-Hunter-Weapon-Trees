@@ -25,16 +25,15 @@ public class WeaponIconView : MonoBehaviour
     private Color32 rarityColorX = new Color32(128, 0, 248, 100);
 
     private string noneElementPath = string.Empty;
-    private string rawElementPath = "";
-    private string fireElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-fire-damage.png";
-    private string waterElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-water-elemental-damage.png";
-    private string thunderElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-thunder-damage.png";
-    private string iceElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-ice-damage.png";
-    private string dragonElementPath = "Assets/Art/UIElements/Icons/Elements/mhw-dragon-damage.png";
-    private string poisonElementPath = "";
-    private string sleepElementPath = "";
-    private string paralysisElementPath = "";
-    private string blastElementPath = "";
+    private string fireElementPath = "Assets/Art/UIElements/Icons/Elements/Fire.png";
+    private string waterElementPath = "Assets/Art/UIElements/Icons/Elements/Water.png";
+    private string thunderElementPath = "Assets/Art/UIElements/Icons/Elements/Thunder.png";
+    private string iceElementPath = "Assets/Art/UIElements/Icons/Elements/Ice.png";
+    private string dragonElementPath = "Assets/Art/UIElements/Icons/Elements/Dragon.png";
+    private string poisonElementPath = "Assets/Art/UIElements/Icons/Elements/Poison.png";
+    private string sleepElementPath = "Assets/Art/UIElements/Icons/Elements/Sleep.png";
+    private string paralysisElementPath = "Assets/Art/UIElements/Icons/Elements/Paralysis.png";
+    private string blastElementPath = "Assets/Art/UIElements/Icons/Elements/Blast.png";
 
     public void UpdateRarityColour(Rarity rarity)
     {
@@ -113,16 +112,16 @@ public class WeaponIconView : MonoBehaviour
                     ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(dragonElementPath));
                     break;
                 case Element.Poison:
-                    texture = null;
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(poisonElementPath));
                     break;
                 case Element.Sleep:
-                    texture = null;
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(sleepElementPath));
                     break;
                 case Element.Paralysis:
-                    texture = null;
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(paralysisElementPath));
                     break;
                 case Element.Blast:
-                    texture = null;
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(blastElementPath));
                     break;
                 default:
                     Debug.LogError($"Invalid weapon element icon: {element}");
