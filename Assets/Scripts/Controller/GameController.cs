@@ -324,6 +324,7 @@ public class GameController : MonoBehaviour {
     public void UpdateElementType(string elementType, int elementIndex)
     {
         GameModel.UpdateElementType(elementType, elementIndex);
+        gameWeaponTreesView.UpdateSelectedWeaponElementIcon(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateElementValue(string elementValue, int elementIndex)
@@ -337,6 +338,7 @@ public class GameController : MonoBehaviour {
     public void HideElement(bool hidden, int elementIndex)
     {
         GameModel.HideElement(hidden, elementIndex);
+        gameWeaponTreesView.UpdateSelectedWeaponElementIcon(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateGemSlot(string gemSlotName, int gemSlotIndex)

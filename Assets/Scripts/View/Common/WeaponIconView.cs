@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,9 @@ public class WeaponIconView : MonoBehaviour
 {
     [SerializeField]
     private Image weaponIcon;
+
+    [SerializeField]
+    public List<RawImage> elementIcons;
 
     private Color32 rarityColor1 = new Color32(232, 232, 232, 100);
     private Color32 rarityColor2 = new Color32(176,148, 248, 100);
@@ -19,6 +23,17 @@ public class WeaponIconView : MonoBehaviour
     private Color32 rarityColor11 = new Color32(255, 255, 0, 100);
     private Color32 rarityColor12 = new Color32(255, 67, 93, 100);
     private Color32 rarityColorX = new Color32(128, 0, 248, 100);
+
+    private string noneElementPath = string.Empty;
+    private string fireElementPath = "Assets/Art/UIElements/Icons/Elements/Fire.png";
+    private string waterElementPath = "Assets/Art/UIElements/Icons/Elements/Water.png";
+    private string thunderElementPath = "Assets/Art/UIElements/Icons/Elements/Thunder.png";
+    private string iceElementPath = "Assets/Art/UIElements/Icons/Elements/Ice.png";
+    private string dragonElementPath = "Assets/Art/UIElements/Icons/Elements/Dragon.png";
+    private string poisonElementPath = "Assets/Art/UIElements/Icons/Elements/Poison.png";
+    private string sleepElementPath = "Assets/Art/UIElements/Icons/Elements/Sleep.png";
+    private string paralysisElementPath = "Assets/Art/UIElements/Icons/Elements/Paralysis.png";
+    private string blastElementPath = "Assets/Art/UIElements/Icons/Elements/Blast.png";
 
     public void UpdateRarityColour(Rarity rarity)
     {
@@ -66,6 +81,63 @@ public class WeaponIconView : MonoBehaviour
                 Debug.LogError($"Trying to update rarity colour to an invalid value: {rarity}");
                 break;
         }
+    }
+
+    public void UpdateElementIcon(int elementIndex, Element element, bool hiddenElement)
+    {
+        if(elementIndex < 3) {
+            Texture2D texture = new Texture2D(256, 256);
+
+            // Set Sprite based on Element
+            switch(element) {
+                case Element.None:
+                    texture = null;
+                    break;
+                case Element.Raw:
+                    texture = null;
+                    break;
+                case Element.Fire:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(fireElementPath));
+                    break;
+                case Element.Water:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(waterElementPath));
+                    break;
+                case Element.Thunder:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(thunderElementPath));
+                    break;
+                case Element.Ice:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(iceElementPath));
+                    break;
+                case Element.Dragon:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(dragonElementPath));
+                    break;
+                case Element.Poison:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(poisonElementPath));
+                    break;
+                case Element.Sleep:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(sleepElementPath));
+                    break;
+                case Element.Paralysis:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(paralysisElementPath));
+                    break;
+                case Element.Blast:
+                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(blastElementPath));
+                    break;
+                default:
+                    Debug.LogError($"Invalid weapon element icon: {element}");
+                    break;
+            }
+
+            elementIcons[elementIndex].gameObject.SetActive(texture != null);
+            elementIcons[elementIndex].texture = texture;
+
+            if(hiddenElement) {
+                elementIcons[elementIndex].color = Color.gray;
+            }
+            else {
+                elementIcons[elementIndex].color = Color.white;
+            }
+        } 
     }
 
 }
