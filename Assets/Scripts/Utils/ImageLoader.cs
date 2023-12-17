@@ -26,14 +26,15 @@ public class ImageLoader : MonoBehaviour {
 
 		if(FileBrowser.Success) {
 			// Print paths of the selected files (FileBrowser.Result) (null, if FileBrowser.Success is false)
-			Debug.Log(FileBrowser.Result[0]);
-			GameController.instance.UpdateSelectedWeaponImage(FileBrowser.Result[0]);
-	
+			// Debug.Log(FileBrowser.Result[0]);
+				
 			// Or, copy the first file to persistentDataPath
-			/*
-			string destinationPath = Path.Combine(Application.persistentDataPath, FileBrowserHelpers.GetFilename(FileBrowser.Result[0]));
+            UnityEngine.Windows.Directory.CreateDirectory($"{Application.persistentDataPath}/Images");
+			
+			string destinationPath = System.IO.Path.Combine(Application.persistentDataPath, "Images", FileBrowserHelpers.GetFilename(FileBrowser.Result[0]));
 			FileBrowserHelpers.CopyFile(FileBrowser.Result[0], destinationPath);
-			*/
-		}
+            GameController.instance.UpdateSelectedWeaponImage(destinationPath);
+
+        }
 	}
 }
