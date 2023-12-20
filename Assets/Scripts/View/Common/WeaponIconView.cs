@@ -10,6 +10,25 @@ public class WeaponIconView : MonoBehaviour
     [SerializeField]
     public List<RawImage> elementIcons;
 
+    [SerializeField]
+    private Texture2D fireElementIcon;
+    [SerializeField]
+    private Texture2D waterElementIcon;
+    [SerializeField]
+    private Texture2D thunderElementIcon;
+    [SerializeField]
+    private Texture2D iceElementIcon;
+    [SerializeField]
+    private Texture2D dragonElementIcon;
+    [SerializeField]
+    private Texture2D poisonElementIcon;
+    [SerializeField]
+    private Texture2D sleepElementIcon;
+    [SerializeField]
+    private Texture2D paralysisElementIcon;
+    [SerializeField]
+    private Texture2D blastElementIcon;
+
     private Color32 rarityColor1 = new Color32(232, 232, 232, 100);
     private Color32 rarityColor2 = new Color32(176,148, 248, 100);
     private Color32 rarityColor3 = new Color32(224, 216, 96, 100);
@@ -23,17 +42,6 @@ public class WeaponIconView : MonoBehaviour
     private Color32 rarityColor11 = new Color32(255, 255, 0, 100);
     private Color32 rarityColor12 = new Color32(255, 67, 93, 100);
     private Color32 rarityColorX = new Color32(128, 0, 248, 100);
-
-    private string noneElementPath = string.Empty;
-    private string fireElementPath = "Assets/Art/UIElements/Icons/Elements/Fire.png";
-    private string waterElementPath = "Assets/Art/UIElements/Icons/Elements/Water.png";
-    private string thunderElementPath = "Assets/Art/UIElements/Icons/Elements/Thunder.png";
-    private string iceElementPath = "Assets/Art/UIElements/Icons/Elements/Ice.png";
-    private string dragonElementPath = "Assets/Art/UIElements/Icons/Elements/Dragon.png";
-    private string poisonElementPath = "Assets/Art/UIElements/Icons/Elements/Poison.png";
-    private string sleepElementPath = "Assets/Art/UIElements/Icons/Elements/Sleep.png";
-    private string paralysisElementPath = "Assets/Art/UIElements/Icons/Elements/Paralysis.png";
-    private string blastElementPath = "Assets/Art/UIElements/Icons/Elements/Blast.png";
 
     public void UpdateRarityColour(Rarity rarity)
     {
@@ -97,31 +105,31 @@ public class WeaponIconView : MonoBehaviour
                     texture = null;
                     break;
                 case Element.Fire:
-                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(fireElementPath));
+                    texture = fireElementIcon;
                     break;
                 case Element.Water:
-                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(waterElementPath));
+                    texture = waterElementIcon;
                     break;
                 case Element.Thunder:
-                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(thunderElementPath));
+                    texture = thunderElementIcon;
                     break;
                 case Element.Ice:
-                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(iceElementPath));
+                    texture = iceElementIcon;
                     break;
                 case Element.Dragon:
-                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(dragonElementPath));
+                    texture = dragonElementIcon;
                     break;
                 case Element.Poison:
-                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(poisonElementPath));
+                    texture = poisonElementIcon;
                     break;
                 case Element.Sleep:
-                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(sleepElementPath));
+                    texture = sleepElementIcon;
                     break;
                 case Element.Paralysis:
-                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(paralysisElementPath));
+                    texture = paralysisElementIcon;
                     break;
                 case Element.Blast:
-                    ImageConversion.LoadImage(texture, FileDataManager.instance.GetImageDataFromPath(blastElementPath));
+                    texture = blastElementIcon;
                     break;
                 default:
                     Debug.LogError($"Invalid weapon element icon: {element}");

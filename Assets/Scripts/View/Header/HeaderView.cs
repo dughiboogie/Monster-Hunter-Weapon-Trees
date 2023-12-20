@@ -48,10 +48,10 @@ public class HeaderView : MonoBehaviour
 
     public void ShowSaveErrorMessage()
     {
-        StartCoroutine(errorMessageShower());
+        StartCoroutine(ErrorMessageShower());
     }
 
-    private IEnumerator errorMessageShower()
+    private IEnumerator ErrorMessageShower()
     {
         errorMessagePanel.SetActive(true);
         yield return new WaitForSecondsRealtime(2);

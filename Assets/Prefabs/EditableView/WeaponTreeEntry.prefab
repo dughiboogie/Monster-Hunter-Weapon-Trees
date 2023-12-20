@@ -633,6 +633,15 @@ MonoBehaviour:
   - {fileID: 2646927747547901225}
   - {fileID: 8729085148400881752}
   - {fileID: 7414561987426576327}
+  fireElementIcon: {fileID: 2800000, guid: f7ec7b0454f1fff438ab98880105cd26, type: 3}
+  waterElementIcon: {fileID: 2800000, guid: 0a80564e8b6b23b4dade417ffb680407, type: 3}
+  thunderElementIcon: {fileID: 2800000, guid: 2a6a4759229770545be686ce26207fc1, type: 3}
+  iceElementIcon: {fileID: 2800000, guid: 9fec2b8f9f2eea54cb4ea520acc67f95, type: 3}
+  dragonElementIcon: {fileID: 2800000, guid: 95730734e07aa2a428d87c93900297b4, type: 3}
+  poisonElementIcon: {fileID: 2800000, guid: 05c3f1f2d6abcc24c97a08e39e7f4410, type: 3}
+  sleepElementIcon: {fileID: 2800000, guid: e0a25d862d40eeb419f77e4186c62155, type: 3}
+  paralysisElementIcon: {fileID: 2800000, guid: c643615d29ee3cd4a847a8869bd4c9bd, type: 3}
+  blastElementIcon: {fileID: 2800000, guid: 00f9981060209ae44861523e0ada9199, type: 3}
 --- !u!223 &7649859892824051224
 Canvas:
   m_ObjectHideFlags: 0
