@@ -41,6 +41,8 @@ public class GameController : MonoBehaviour {
         gameWeaponTreesView.RemoveWeaponTreeViews();
         detailsView.ResetView();
         ActivateDetailsView(false);
+
+        InputElementsLocker.instance.ResetLock();
     }
 
     public void CreateNewGame()
@@ -424,6 +426,11 @@ public class GameController : MonoBehaviour {
     public void GoToHomeCancel()
     {
         unsavedChangesInfoPanel.SetActive(false);
+    }
+
+    public void LockChanges()
+    {
+        InputElementsLocker.instance.LockChanges();
     }
 
     #endregion

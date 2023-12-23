@@ -136,7 +136,7 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
             return;
         }
         
-        if(eventData.clickCount == 2) {
+        if(eventData.clickCount == 2 && !InputElementsLocker.instance.LockActive) {
             if(isWeaponPresent) {
                 Debug.LogWarning("This should never happen");
             }
@@ -146,14 +146,20 @@ public class WeaponTreeEntryView : MonoBehaviour, IPointerClickHandler
 
     public void OnDragBegin()
     {
-        GameController.instance.UpdateStartWeaponDrag(weaponID, WeaponCoordinates);
-        isDragging = true;
+        if(!InputElementsLocker.instance.LockActive)
+        {
+            GameController.instance.UpdateStartWeaponDrag(weaponID, WeaponCoordinates);
+            isDragging = true;
+        }
     }
 
     public void OnDragEnd()
     {
-        GameController.instance.UpdateEndWeaponDrag(weaponID, WeaponCoordinates);
-        isDragging = false;
+        if(!InputElementsLocker.instance.LockActive)
+        {
+            GameController.instance.UpdateEndWeaponDrag(weaponID, WeaponCoordinates);
+            isDragging = false;
+        }
     }
 
     #endregion

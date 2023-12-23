@@ -33,6 +33,8 @@ public class WeaponTreeView : MonoBehaviour
         SetWeaponTreeRowBackgroundColor();
         SetupWeaponTreeEntryViewsGrid();
         UpdateWeaponEntryViews(weaponTree.weapons);
+
+        InputElementsLocker.instance.AddLockable(weaponTreeID, weaponTreeName);
     }
 
     private void SetWeaponTreeRowBackgroundColor()
@@ -71,6 +73,11 @@ public class WeaponTreeView : MonoBehaviour
     public void OnPointerEnter()
     {
         ConsolePrinter.instance.UpdateConsoleYCoordinates(weaponTreePosition);
+    }
+
+    private void OnDestroy()
+    {
+        InputElementsLocker.instance.RemoveLockable(weaponTreeID);
     }
 
     #endregion

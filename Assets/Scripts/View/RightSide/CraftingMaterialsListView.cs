@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CraftingMaterialsListView : MonoBehaviour
@@ -25,7 +26,7 @@ public class CraftingMaterialsListView : MonoBehaviour
     public void RemoveAllCraftingMaterials()
     {
         foreach(CraftingMaterialEntryView craftingMaterialEntryView in craftingMaterialEntryViews) {
-            Destroy(craftingMaterialEntryView.gameObject);
+            DestroyImmediate(craftingMaterialEntryView.gameObject);
         }
 
         craftingMaterialEntryViews.Clear();

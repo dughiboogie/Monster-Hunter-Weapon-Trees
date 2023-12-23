@@ -8,10 +8,10 @@ public class CraftingMaterialEntryView : MonoBehaviour {
     private TMP_InputField materialName;
 
     [SerializeField]
-    private Image materialIcon;
+    private TMP_InputField materialAmount;
 
     [SerializeField]
-    private TMP_InputField materialAmount;
+    private Button removeMaterialButton;
 
     [SerializeField]
     private Image rowBackground;
@@ -24,6 +24,10 @@ public class CraftingMaterialEntryView : MonoBehaviour {
         FormatMaterialAmount(material.materialAmount.ToString());
         materialID = material.materialID;
         SetMaterialRowBackgroundColor();
+
+        InputElementsLocker.instance.AddLockable(materialID, materialName);
+        InputElementsLocker.instance.AddLockable(materialID, materialAmount);
+        InputElementsLocker.instance.AddLockable(materialID, removeMaterialButton);
     }
 
     private void FormatMaterialAmount(string materialAmount)
@@ -56,6 +60,11 @@ public class CraftingMaterialEntryView : MonoBehaviour {
     public void OnMaterialDelete()
     {
         GameController.instance.RemoveMaterial(materialID);
+    }
+
+    private void OnDestroy()
+    {
+        InputElementsLocker.instance.RemoveLockable(materialID);
     }
 
     #endregion
