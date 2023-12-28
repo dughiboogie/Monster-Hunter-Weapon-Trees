@@ -291,6 +291,8 @@ public class GameController : MonoBehaviour {
             sharpnessValue = "0";
         }
         GameModel.UpdateSharpnessValue(sharpnessColour, uint.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
+
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateSharpnessUpdateValue(SharpnessColour sharpnessColour, string sharpnessValue)
@@ -299,6 +301,8 @@ public class GameController : MonoBehaviour {
             sharpnessValue = "0";
         }
         GameModel.UpdateSharpnessUpdateValue(sharpnessColour, uint.Parse(sharpnessValue, System.Globalization.CultureInfo.InvariantCulture));
+        
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateSharpnessMaxValue(SharpnessColour sharpnessColour, string sharpnessMaxValue)
@@ -307,6 +311,8 @@ public class GameController : MonoBehaviour {
             sharpnessMaxValue = "0";
         }
         GameModel.UpdateSharpnessMaxValue(sharpnessColour, uint.Parse(sharpnessMaxValue, System.Globalization.CultureInfo.InvariantCulture));
+
+        detailsView.UpdateView(GameModel.GetSelectedWeapon());
     }
 
     public void UpdateAffinityValue(string affinityValue)

@@ -7,10 +7,18 @@ public class SharpnessView : MonoBehaviour
     [SerializeField]
     private List<TMP_InputField> sharpnessValues;
 
+    [SerializeField]
+    private List<RectTransform> sharpnessBars;
+
     public void ResetView()
     {
         foreach(var sharpnessValue in sharpnessValues) {
             sharpnessValue.SetTextWithoutNotify(string.Empty);
+        }
+
+        foreach(var sharpnessBar in sharpnessBars)
+        {
+            sharpnessBar.sizeDelta = Vector2.zero;
         }
     }
 
@@ -18,6 +26,9 @@ public class SharpnessView : MonoBehaviour
     {
         for(int i = 0; i < sharpnesses.Count; i++) {
             sharpnessValues[i].SetTextWithoutNotify(sharpnesses[i].value.ToString());
+
+            float currentBarUnityValue = (float)(sharpnesses[i].value * 98) / 400;
+            sharpnessBars[i].sizeDelta = new Vector2 (currentBarUnityValue, 9);
         }
     }
 
@@ -56,6 +67,11 @@ public class SharpnessView : MonoBehaviour
     public virtual void OnPurpleSharpnessChange(string sharpnessValue)
     {
         GameController.instance.UpdateSharpnessValue(SharpnessColour.Purple, sharpnessValue);
+    }
+
+    public void OnSharpnessClick()
+    {
+
     }
 
     #endregion
