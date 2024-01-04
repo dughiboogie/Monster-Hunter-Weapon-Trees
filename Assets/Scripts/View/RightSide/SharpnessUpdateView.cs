@@ -37,6 +37,11 @@ public class SharpnessUpdateView : SharpnessView
         GameController.instance.UpdateSharpnessUpdateValue(SharpnessColour.Purple, sharpnessValue);
     }
 
+    public override void OnSkyBlueSharpnessChange(string sharpnessValue)
+    {
+        GameController.instance.UpdateSharpnessUpdateValue(SharpnessColour.SkyBlue, sharpnessValue);
+    }
+
     #endregion
 
 }

@@ -69,6 +69,11 @@ public class SharpnessView : MonoBehaviour
         GameController.instance.UpdateSharpnessValue(SharpnessColour.Purple, sharpnessValue);
     }
 
+    public virtual void OnSkyBlueSharpnessChange(string sharpnessValue)
+    {
+        GameController.instance.UpdateSharpnessValue(SharpnessColour.SkyBlue, sharpnessValue);
+    }
+
     public void OnSharpnessClick()
     {
 
