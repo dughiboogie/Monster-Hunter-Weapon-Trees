@@ -760,8 +760,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialName: {fileID: 6386826493758699973}
-  materialIcon: {fileID: 0}
   materialAmount: {fileID: 1040407095159891667}
+  removeMaterialButton: {fileID: 4358460481484751263}
   rowBackground: {fileID: 9159214881192193856}
 --- !u!222 &1203946688643405529
 CanvasRenderer:
@@ -1385,7 +1385,7 @@ GameObject:
   - component: {fileID: 2595887363784371233}
   - component: {fileID: 4358460481484751263}
   m_Layer: 5
-  m_Name: AddMaterialButton
+  m_Name: RemoveMaterialButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

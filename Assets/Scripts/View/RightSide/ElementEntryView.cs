@@ -15,11 +15,23 @@ public class ElementEntryView : StatEntryView
 
     private int elementIndex;
 
+    private UniqueID elementID;
+
     public void ResetView()
     {
         UpdateElementEntry(Element.None, 0);
         UpdateElementHiddenText(false);
         hiddenElementToggle.SetIsOnWithoutNotify(false);
+    }
+
+    private void Start()
+    {
+        elementID = new UniqueID();
+        
+        InputElementsLocker.instance.AddLockable(elementID, hiddenElementToggle);
+        InputElementsLocker.instance.AddLockable(elementID, elementType);
+        InputElementsLocker.instance.AddLockable(elementID, elementValue);
+        InputElementsLocker.instance.LockDynamicElementsChangesWithoutUpdate();
     }
 
     public void UpdateElementEntryIndex(int index)
@@ -62,6 +74,11 @@ public class ElementEntryView : StatEntryView
     {
         GameController.instance.HideElement(hidden, elementIndex);
         UpdateElementHiddenText(hidden);
+    }
+
+    private void OnDestroy()
+    {
+        InputElementsLocker.instance.RemoveLockable(elementID);
     }
 
     #endregion

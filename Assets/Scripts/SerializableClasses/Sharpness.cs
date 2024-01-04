@@ -18,5 +18,6 @@ public enum SharpnessColour {
     Green,
     Blue,
     White,
-    Purple
+    Purple,
+    SkyBlue
 }

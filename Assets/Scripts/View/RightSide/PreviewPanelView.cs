@@ -29,7 +29,6 @@ public class PreviewPanelView : MonoBehaviour
     {
         weaponName.text = string.Empty;
         ActivateUploadImageIcon(true);
-        craftingMaterialsView.RemoveAllCraftingMaterials();
         FormatCraftingCost(string.Empty);
         ActivateAddMaterialButton(false);
     }

@@ -17,6 +17,11 @@ public class KeyboardInputManager : MonoBehaviour
 
     private void Update()
     {
+        if(InputElementsLocker.instance.LockActive)
+        {
+            return;
+        }
+
         if(Input.GetKeyDown(KeyCode.LeftAlt)) {
             Debug.Log("Left alt key is pressed.");
             leftAltDown = true;

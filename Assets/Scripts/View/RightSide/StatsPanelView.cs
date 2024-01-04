@@ -167,7 +167,7 @@ public class StatsPanelView : MonoBehaviour
         elementEntryViews[0].ResetView();
 
         for(int i = 1; i < elementEntryViews.Count;) {
-            Destroy(elementEntryViews[i].gameObject);
+            DestroyImmediate(elementEntryViews[i].gameObject);
             elementEntryViews.RemoveAt(i);
         }
     }

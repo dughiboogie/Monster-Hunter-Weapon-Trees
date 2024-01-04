@@ -25,7 +25,8 @@ public class WeaponStats {
             new Sharpness(SharpnessColour.Green),
             new Sharpness(SharpnessColour.Blue),
             new Sharpness(SharpnessColour.White),
-            new Sharpness(SharpnessColour.Purple)
+            new Sharpness(SharpnessColour.Purple),
+            new Sharpness(SharpnessColour.SkyBlue)
         };
 
         sharpnessesUpdate = new List<Sharpness>() {
@@ -35,7 +36,8 @@ public class WeaponStats {
             new Sharpness(SharpnessColour.Green),
             new Sharpness(SharpnessColour.Blue),
             new Sharpness(SharpnessColour.White),
-            new Sharpness(SharpnessColour.Purple)
+            new Sharpness(SharpnessColour.Purple),
+            new Sharpness(SharpnessColour.SkyBlue)
         };
 
         sharpnessesMax = new List<Sharpness>() {
@@ -45,7 +47,8 @@ public class WeaponStats {
             new Sharpness(SharpnessColour.Green),
             new Sharpness(SharpnessColour.Blue),
             new Sharpness(SharpnessColour.White),
-            new Sharpness(SharpnessColour.Purple)
+            new Sharpness(SharpnessColour.Purple),
+            new Sharpness(SharpnessColour.SkyBlue)
         };
 
         weaponElements = new List<WeaponElement>();
